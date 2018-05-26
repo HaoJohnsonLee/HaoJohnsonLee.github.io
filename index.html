@@ -273,6 +273,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/26/设计模式-单例模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/26/设计模式-单例模式/" itemprop="url">设计模式--单例模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-26T11:39:38+08:00">
+                2018-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>今天开始编写一些面向对象编程所涉及到的一些设计模式，不定时更新。此部分参考自《设计模式–可复用面向对象软件的基础》(《Design Patterns–Elements of Reusable Object-Oriented Software》)<br>根据设计模式的目的性，设计模式可分为创建型(Creational)、结构型(Structural)和行为型(Behavioral)三种，分别对应着对象的创建、对象的组合处理以及对象的交互。我们将依次介绍所有可能涉及到的设计模式进行一个简单的介绍，并且使用java语言描述。介绍完成之后通过对java巨无霸–<a href="https://spring.io/" target="_blank" rel="noopener">Spring Framework</a>所涉及到的设计模式进行分析。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>单例模式是我接触的第一个设计模式，也较为简单，所以用它来开篇。</p>
+<h3 id="使用动机"><a href="#使用动机" class="headerlink" title="使用动机"></a>使用动机</h3><p>通常，某个类的实例(instance)会在多个地方使用，但是全局只能同时使用同一个实例。举个例子，我经常需要使用扫把，每次我想要扫把的时候都去仓库拿，但是我每次都想要我最开始的那一把，因为我使用习惯了，对我来说最合适。需要一种模式保证人不会出错的能确保我得到我的那把扫把。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>如何保证全局只有一个实例？设想如果仓库里总共就一把扫把，当然能够拿到我需要的。新的问题来了，如何保证仓库只有一把扫把？可以从这方面考虑，我们每次取扫把的时候，问问仓库你那里有没有扫把？如果没有的话，就帮我造一把，否则就直接把已经有的给我；或者仓库一开始就只有一把扫把，我一来问就给我，而且不允许在仓库外造扫把。所以我们可以使用这样一种方式–让类自身保存全局唯一的实例，并且对外不提供创建类实例的方法。<br>我们知道，java类实例的创建是通过访问构造函数来创建的。通常会有一个默认的空构造函数，这就让我们能够用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//造扫把的过程</span></span><br><span class="line">Singleton instance = <span class="keyword">new</span> Singleton();</span><br></pre></td></tr></table></figure></p>
+<p>的方式来创建类的实例，每次调用构造方法，就会返回一个新的实例,将构造函数设置为private便可以阻止类外部实例化。<br>但是新的问题又来了，什么时候造扫把？我问之前还是我问之后？分析两种过程:</p>
+<ul>
+<li><p>我问之前: 当我问之前就造好了扫把的话，我去问立马就能给我，速度快不用担心等待时间长。但是他最开始不知道我的喜好，只能按照他自己想的造扫把，可能不会很适合我。实现如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_LONG = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//只能造1米的扫把</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance =<span class="keyword">new</span> Singleton(DEFAULT_LONG);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> initLong;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">(<span class="keyword">int</span> initLong)</span></span>&#123; <span class="keyword">this</span>.initLong = initLong;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我问之后：当我去拿扫把时，我需要询问仓库是否有造好了的扫把，没有的话快帮我造一把。虽然会有等待的时间，但是我我可以说我需要扫把长 1.5 米，尽量轻一点的扫把。实现如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> initLong;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">(<span class="keyword">int</span> initLong)</span></span>&#123; <span class="keyword">this</span>.initLong = initLong;&#125;</span><br><span class="line">    <span class="comment">//initLong 决定我要的扫把长</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">(<span class="keyword">int</span> initLong)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">            instance = <span class="keyword">new</span> Singleton(initLong);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h3><p>以上两种是是最为基本的两种单例模式的实现；仔细对第二种方法进行思考，当我问仓库要扫把的时候，在它没有造好的时候别人问了一次，他就会再造一把新的，那我就不能肯定我每次问的得到的是同一把扫把。所以当他在扫把的时候，我不允许别人再问它了，这个时候它只能为我服务就行了。实现如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> initLong;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">(<span class="keyword">int</span> initLong)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.initLong = initLong;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">(<span class="keyword">int</span> initLong)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>)</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton(initLong);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上，就保证了全局具有唯一的Singleton实例，也就是每次我都能拿到同一把扫把。单例模式有以下优点:</p>
+<ol>
+<li>保证类实例全局唯一，严格控制外部访问。</li>
+<li>改进了全局变量模式，避免污染变量空间。</li>
+<li>允许对操作和表示精细化。</li>
+<li>允许可变数目的实例。</li>
+<li>比直接操作类更为灵活。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/25/同病相怜/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -803,7 +963,7 @@ emoji，只能手动狗头)，希望大家能多交流以增进感情。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -816,7 +976,7 @@ emoji，只能手动狗头)，希望大家能多交流以增进感情。
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">tags</span>
               
             </div>
