@@ -273,6 +273,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/30/算法-向量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/算法-向量/" itemprop="url">算法-向量-1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-30T16:39:23+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  1,168
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  6 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h4><p>本次实现一个简单的向量结构，拥有遍历，插入，查找，删除接口。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><h5 id="Vector-h"><a href="#Vector-h" class="headerlink" title="Vector.h"></a>Vector.h</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> Rank;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFAULT_CAPACITY 10 <span class="comment">// 初始向量容量</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span> <span class="comment">//这是一个visit对象实例</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp; e)</span> </span>&#123; e++; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Rank _size;</span><br><span class="line">	T* _items;</span><br><span class="line">	<span class="keyword">int</span> _capacity;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">expand</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">shrink</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Vector(<span class="keyword">int</span> c = DEFAULT_CAPACITY);</span><br><span class="line">	Vector(T* items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi);</span><br><span class="line">	<span class="keyword">virtual</span> ~Vector();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//只读接口</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//判断是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//插入操作</span></span><br><span class="line">	<span class="function">Rank <span class="title">insert</span><span class="params">(Rank r, <span class="keyword">const</span> T&amp; e)</span></span>;</span><br><span class="line">	<span class="comment">//删除 位于lo 与 hi区间的元素 返回删除个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(Rank lo, Rank hi)</span></span>;</span><br><span class="line">	<span class="comment">//删除 位于r 的元素 返回删除个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(Rank r)</span></span>;</span><br><span class="line">	<span class="comment">//区间内查找</span></span><br><span class="line">	<span class="function">Rank <span class="title">find</span><span class="params">(<span class="keyword">const</span> T&amp; e, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span>;</span><br><span class="line">	<span class="comment">//剔除所有重复元素 O(n^2)</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">deduplicate</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//遍历元素</span></span><br><span class="line">	void traverse(void(*visit)(T&amp; e));</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt;  <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST&amp; vst)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//可写接口</span></span><br><span class="line">	T &amp; <span class="keyword">operator</span>[] (Rank rank) <span class="keyword">const</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h5 id="Vector-cpp"><a href="#Vector-cpp" class="headerlink" title="Vector.cpp"></a>Vector.cpp</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Vector.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::Vector(<span class="keyword">int</span> c)</span><br><span class="line">&#123;</span><br><span class="line">	_items = <span class="keyword">new</span> T[_capacity = c];</span><br><span class="line">	_size = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::Vector(T * items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	copyFrom(items, lo, hi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::~Vector()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">delete</span>[] _items;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::size() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> _size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">bool</span> Vector&lt;T&gt;::empty() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> !_size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::insert(Rank r, <span class="keyword">const</span> T&amp; e)</span><br><span class="line">&#123;</span><br><span class="line">	expand();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = _size; i &gt; r; i--) </span><br><span class="line">		_items[i] = _items[i - <span class="number">1</span>];</span><br><span class="line">	_items[r] = e; _size++;</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::remove(Rank lo, Rank hi)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (hi &lt; _size) _items[lo++] = _items[hi++];</span><br><span class="line">	<span class="keyword">int</span> decrease = hi - lo;</span><br><span class="line">	_size = _size - decrease;</span><br><span class="line">	shrink();  <span class="comment">//非必须</span></span><br><span class="line">	<span class="keyword">return</span> decrease;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::remove(Rank r)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> remove(r, r + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::find(<span class="keyword">const</span> T &amp; e, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span> (lo &lt; hi-- &amp;&amp; e != _items[hi]);</span><br><span class="line">	<span class="keyword">return</span> hi;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::deduplicate()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> oldSize = _size;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (i &lt; _size) &#123;</span><br><span class="line">		find(_items[i], <span class="number">0</span>, i) &lt; <span class="number">0</span> ? i++ : remove(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> oldSize - _size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(<span class="keyword">void</span>(*visit)(T &amp;e))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_items[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> VST&gt;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST &amp; visit) <span class="comment">//VST 对象进行 "()"操作符重载，执行自定义复杂操作</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_items[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T &amp; Vector&lt;T&gt;::<span class="keyword">operator</span>[](Rank rank) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	assert(<span class="number">0</span> &lt;= rank &amp;&amp; rank &lt; _size);</span><br><span class="line">	<span class="keyword">return</span> _items[rank];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::copyFrom(T * items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	assert(lo &lt; hi);</span><br><span class="line">	_items = <span class="keyword">new</span> T[_capacity = (hi - lo) &lt;&lt; <span class="number">1</span>];</span><br><span class="line">	_size = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (lo&lt;hi)</span><br><span class="line">		_items[_size++] = items[lo++];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每次插入前调用该函数</span></span><br><span class="line"><span class="comment"> * 确保不上溢</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::expand()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (_size &lt; _capacity) <span class="keyword">return</span>;  <span class="comment">//不必扩容</span></span><br><span class="line">	<span class="keyword">if</span> (_capacity &lt; DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;   <span class="comment">//至少将最大容量扩展至默认值</span></span><br><span class="line">	<span class="comment">//开辟新数组并复制数组</span></span><br><span class="line">	T* oldElem = _items; _items = <span class="keyword">new</span> T[_capacity &lt;&lt; <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">		_items[i] = oldElem[i];</span><br><span class="line">	<span class="keyword">delete</span>[] oldElem;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 每次删除前调用该函数</span></span><br><span class="line"><span class="comment">* 确保不下溢</span></span><br><span class="line"><span class="comment">* 保证一定的空间利用率</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::shrink()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (_capacity &lt; DEFAULT_CAPACITY &lt;&lt; <span class="number">1</span>) <span class="keyword">return</span>; <span class="comment">//不至于最后大小小于默认值</span></span><br><span class="line">	<span class="keyword">if</span> (_size &lt;&lt; <span class="number">2</span> &gt; _capacity)  <span class="keyword">return</span>;</span><br><span class="line">	<span class="comment">// 当元素数量4倍小于最大容量时扩容</span></span><br><span class="line">	T* oldElem = _items; _items = <span class="keyword">new</span> T[_capacity &gt;&gt; <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">		_items[i] = oldElem[i];</span><br><span class="line">	<span class="keyword">delete</span>[] oldElem;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h4><p>Is it possible to replace:<br>是否可以向量扩容代码中的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) _elem[i] = oldElem[i];</span><br></pre></td></tr></table></figure></p>
+<p>in the vector expansion code with:<br>替代为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">memcpy</span>(_elem, oldElem, _size * <span class="keyword">sizeof</span>(T));</span><br></pre></td></tr></table></figure></p>
+<p>P.S.This question involves the relevant knowledge of C++<br>P.S.本题涉及C++的相关知识</p>
+<p>Yes, they are equivalent and there will be no problem.<br>是，二者是等价的，不会有任何问题。 No, because the range of elemental intervals for the two copies is different.<br>否，因为二者复制的元素区间范围不同。 No, because the range of elemental intervals for the two copies is different.<br>否，因为二者复制的元素区间范围不同。 - 不正确<br>No, because their efficiency are different.<br>否，因为二者的效率不同。<br>No, because whether the latter can achieve the purpose is related to element type T.<br>否，因为后者能否达到目的与元素类型T有关。</p>
+<h4 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h4><p>否，因为后者能否达到目的与元素类型T有关。<br>函数 ~memcpy~ 当~T~不是基本数据类型，并且没有自定义的拷贝函数时，只能执行浅拷贝，当释放原有数组空间时，会使得内容指针成为野指针。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/29/报复/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1664,237 +1822,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/24/初衷/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnson Lee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="昊江的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/24/初衷/" itemprop="url">初衷</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-24T18:26:10+08:00">
-                2018-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article</span>
-                
-                <span title="Words count in article">
-                  1,429
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time</span>
-                
-                <span title="Reading time">
-                  5 mins
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><pre><code>这段时间经历了很多事情，首先各种杯赛，  
-因为很缺&quot;码农&quot;，基本上所有的开发工作  
-都由我和世杰一起做，庆幸有世杰这样给  
-力的队友
-同时也感谢世杰的信任。团队中还有一些  
-新人，需要学习，有两位同学表现很好，  
-私下已经提出表扬，希望他们能够再接再  
-厉继续发扬吃苦耐劳精神，勇攀高峰。在  
-你们的帮助下，第一个版本的App终于完成了，  
-虽然功能不是十分完善(吐槽设计小姐姐的  
-设计老是和我们的设计思路相悖 = =)，但  
-是踏出了第一步也是非常值得我们高兴的，  
-所以我决定周末技术团队聚餐一波，好好交  
-流交流。除了比赛之外，大概最大的打击就  
-是感情方面的了，是的，我失恋了，只能说  
-是我遇人不淑吧。所以还得再次感谢世杰帮  
-我抗下了一部分工作，接下来的路还得好好走，  
-不管发生了什么，能呼吸就行了，对吧。  
-最后由于大一太过于放肆，挂了离散数学(后  
-来没复习依然考了90+)，所以是旷课造成的，  
-这里就是想甩锅给咳咳。所以我也踏上了考  
-研之路，能帮上你们的忙不多了，希望理解，考完在浪吧。
-</code></pre><h3 id="为什么要这个博客"><a href="#为什么要这个博客" class="headerlink" title="为什么要这个博客"></a>为什么要这个博客</h3><pre><code>首先原来的文章太过于分散，CSDN、CNBLOG  
-甚至还有票圈等等，我认为是时候找一个统一  
-的地方把他们收集起来了。起初想开通一个个人  
-公众号，但是发现束缚太多，不利于我随意发挥，  
-CSDN也不有很多限制。并且在吴小龙同学知识星  
-球里发现搭建个人博客的教程，于是我就有了这  
-个无拘无束的网络空间了。这里再次感谢吴小龙同学(微信:wuxiaolongtongxue)。
-然后票圈同学经常认为我很高冷，那是因为我没  
-有激发我活泼的一面(羞 。确实上大学一来交的  
-朋友确实大部分在网络上，而且都是因为代码上  
-志同道合(突然觉得好不堪)，所以这个博客同时  
-也连接了网络朋友和现实朋友，希望大家都能放  
-下手机，离开电脑，多和你对面自习的素不相识  
-的妹子打个招呼，嘻嘻。希望大家都有一个美好  
-的大学时光。
-</code></pre><h3 id="这个博客会写些什么"><a href="#这个博客会写些什么" class="headerlink" title="这个博客会写些什么"></a>这个博客会写些什么</h3><pre><code>    作为一个&quot;码农&quot;，必然技术上的分享会多一点，  
-但是同时也会有一些对生活、社会事件、感情、学习  
-等等的感想，当作是所有可以公开的信息的仓库，好  
-让大家窥探我的内心世界(好气啊，还不知道怎么添加  
-emoji，只能手动狗头)，希望大家能多交流以增进感情。
-</code></pre><h3 id="闲篇"><a href="#闲篇" class="headerlink" title="闲篇"></a>闲篇</h3><pre><code>自从一个人之后，确实想清楚了很多东西，有  
-了很多一个人呆着的时间。古人说要慎独，我  
-算是明白了个中道理，不过当你做到理性思考  
-的时候心境自然又会有大不同。回头想想，大  
-学生活还是非常美好的，自习室坐着，想干什  
-么就干什么，无拘无束的，想写什么写什么，  
-想想什么想什么，思绪都不知道飞到了那个星  
-球，第一次有这么自由的感觉。一直以来，都  
-有晚上跑步的习惯(但是不知道为什么还是这么  
-肥，这是最气的，考完研之后一定要好好塑形),  
-看着运动场上这么多一起努力锻炼的朋友，还  
-是会觉得减肥充满希望滴。
-说下考研的事儿，原来想考交大的，但是考虑到  
-各种原因，可能和这个目标要错失了，说来可笑，  
-高考之后说去上海的是我，最后怎么都不去上海  
-的还是我(说的也是你们这些说要来武汉的)。本  
-来差点放弃考研了，不过在我老妈破骂一顿后，  
-我还是决定要拼一下，所以我决定考清华了，为  
-什么呢，我说喜欢北京的空气你们相信吗？前段  
-时间，一位来校招的hr姐姐说到清华氛围很好，也更  
-能开阔眼界，区位也很好(相对于闵行)，所以清  
-华成了一个比较好的选择。其实听她说的时候，  
-我发现我的眼界确实受限了，很多事情想得太过  
-于局限于自己的世界。不过不去接触怎么知道更  
-多的东西，所以说环境也很重要。目前按照复习  
-计划进行着，就是一天背这么多单词有点眼睛痛，  
-不过倒是助眠。
-我很幸运，有这么多帮助我的同学，这么多关心  
-我的亲人，帮助我走过一个一个难关。虽然我自  
-己很多事情做的不是很好我知道，你们夸我的时  
-候我还是觉得超级开心。
-有道云笔记编辑MarkDown文档很方便，感谢子腾  
-同学的推荐。原谅我这个MarkDowm菜鸟，以后排  
-版会好的，网站建设也会更好的。
-同时，希望有志于加入我们开发团队的请联系我(johnsonlee@whu.edu.cn)。
-</code></pre><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><pre><code>很多事情不是你努力了就会朝着那个方向前进，但是也不必沮丧，至少你努力了。给力！！！
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1938,7 +1872,7 @@ emoji，只能手动狗头)，希望大家能多交流以增进感情。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
