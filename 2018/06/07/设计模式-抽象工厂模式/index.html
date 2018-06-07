@@ -94,19 +94,19 @@
 
 
 
-<meta name="description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为需要">
+<meta name="description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为要让">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式-抽象工厂模式">
 <meta property="og:url" content="https://haojohnsonlee.github.io/2018/06/07/设计模式-抽象工厂模式/index.html">
 <meta property="og:site_name" content="昊江的博客">
-<meta property="og:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为需要">
+<meta property="og:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为要让">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://47.93.198.51/temp/abstract_factory.jpg">
-<meta property="og:updated_time" content="2018-06-07T13:47:54.859Z">
+<meta property="og:updated_time" content="2018-06-07T13:58:44.237Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式-抽象工厂模式">
-<meta name="twitter:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为需要">
+<meta name="twitter:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为要让">
 <meta name="twitter:image" content="http://47.93.198.51/temp/abstract_factory.jpg">
 
 
@@ -335,7 +335,7 @@
                   <span class="post-meta-item-text">Words count in article</span>
                 
                 <span title="Words count in article">
-                  970
+                  969
                 </span>
               
 
@@ -373,7 +373,7 @@
 
       
         <h3 id="介绍及使用动机"><a href="#介绍及使用动机" class="headerlink" title="介绍及使用动机"></a>介绍及使用动机</h3><p>我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。</p>
-<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>现在我们需要制作一个有两种界面风格的的软件分别为<em>Motif</em>和<em>Presentation Manager</em>，两者具有不同的窗体与滚动条风格。因为需要让客户端可以根据需要创建不同的界面风格，所以我们应该引入<em>WidgetFactory</em>接口屏蔽下层实现。</p>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>现在我们需要制作一个有两种界面风格的的软件分别为<em>Motif</em>和<em>Presentation Manager</em>，两者具有不同的窗体与滚动条风格。因为要让客户端可以根据需要创建不同的界面风格，所以我们应该引入<em>WidgetFactory</em>接口屏蔽下层实现。</p>
 <h4 id="Window-java-amp-ScrollBar-java"><a href="#Window-java-amp-ScrollBar-java" class="headerlink" title="Window.java &amp; ScrollBar.java"></a>Window.java &amp; ScrollBar.java</h4><p>窗体与滚动条对象<br>两个业务对象提供了基本的操作方法:show()、roll()<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Window</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ScrollBar</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">roll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="WidgetFactory-java"><a href="#WidgetFactory-java" class="headerlink" title="WidgetFactory.java"></a>WidgetFactory.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">WidgetFactory</span> </span>&#123;</span><br><span class="line">    <span class="function">ScrollBar <span class="title">createScrollBar</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Window <span class="title">createWindow</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到，此接口提供了创建窗体和滚动条的方法,客户端只要存在该接口就能实现创建窗体和滚动条。具体对象的创建延迟到了WidgetFactory的子类进行。</p>
