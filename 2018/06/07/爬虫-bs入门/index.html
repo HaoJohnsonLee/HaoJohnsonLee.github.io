@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="昊江的博客">
 <meta property="og:description" content="爬虫简介爬虫通常被称为Spider，是一种不断运行在网络上获取信息并保存分析的一类程序。爬虫按照预期功能的不同，实现的方式同样大有不同，由于前些天接触到了一个数据搜集任务，故记录下来这次使用的工具。 爬虫工作流从爬虫的功能及目的来看，要获取数据，得到数据之后按照自定义的方式保存下来。简单来说就是:  发送Http请求 接收数据，根据不同的格式去解析数据使之可读 解析可读文档，提取有效信息 持久化到">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-07T08:03:28.696Z">
+<meta property="og:updated_time" content="2018-06-07T08:06:03.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬虫-bs入门">
 <meta name="twitter:description" content="爬虫简介爬虫通常被称为Spider，是一种不断运行在网络上获取信息并保存分析的一类程序。爬虫按照预期功能的不同，实现的方式同样大有不同，由于前些天接触到了一个数据搜集任务，故记录下来这次使用的工具。 爬虫工作流从爬虫的功能及目的来看，要获取数据，得到数据之后按照自定义的方式保存下来。简单来说就是:  发送Http请求 接收数据，根据不同的格式去解析数据使之可读 解析可读文档，提取有效信息 持久化到">
@@ -411,7 +411,7 @@
 <li>属性查找<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查找所有class值为exp的p节点</span><br><span class="line">info_tag = soup.find(&apos;p&apos;, attrs=&#123;&apos;class&apos;: &apos;exp&apos;&#125;)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>我们爬取的baseurl是++<a href="http://esf.wuhan.fang.com/integrate/i31/++，我们需要的是首页面所有的房屋基础信息。" target="_blank" rel="noopener">http://esf.wuhan.fang.com/integrate/i31/++，我们需要的是首页面所有的房屋基础信息。</a></p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>我们爬取的baseurl是 <a href="http://esf.wuhan.fang.com/integrate/i31/" target="_blank" rel="noopener">http://esf.wuhan.fang.com/integrate/i31/</a> ，我们需要的是首页面所有的房屋基础信息。</p>
 <h4 id="实践步骤"><a href="#实践步骤" class="headerlink" title="实践步骤"></a>实践步骤</h4><ol>
 <li>先进入该网站的<a href="http://esf.wuhan.fang.com/robots.txt" target="_blank" rel="noopener"><em>robots.txt</em></a>文件查看网站对爬虫的宽容度。<br>注意到该网站对于我们需要爬取的页面来说没有作任何限制,没有Disallow也不需要Delay。  </li>
 <li>查看浏览器访问该网站的response header<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: nginx</span><br><span class="line">Date: Thu, 07 Jun 2018 07:08:37 GMT</span><br><span class="line">Content-Type: text/html; charset=gb2312</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Cache-Control: no-cache, no-store</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Expires: -1</span><br><span class="line">X-AspNet-Version: 4.0.30319</span><br><span class="line">X-Powered-By: ASP.NET</span><br><span class="line">X-Cache: from dzc-wn-dmzys01.light.soufun.com</span><br><span class="line">Content-Encoding: gzip</span><br><span class="line">X-Cache:  from dzc-wn-dmzhc04.light.soufun.com</span><br></pre></td></tr></table></figure>
