@@ -273,6 +273,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/26/算法-回文串/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/26/算法-回文串/" itemprop="url">算法--回文串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-26T15:36:49+08:00">
+                2018-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  423
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  2 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><p>今天开始算法与数据结构篇的编写，将会更新所有考试中需要用到的算法与数据结构，考完之后随缘更新。参考书目《算法 第四版》(《Algorithms Fourth Edition》)。主要描述语言为C/C++,可能有部分算法使用java/python/m(matlab)描述。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>今天做一个简单引入，我们都知道回文在中国诗词中十分流行，优美至极。比如有:</p>
+<blockquote>
+<p>莺啼岸柳弄春晴，柳弄春晴夜月明。<br>  明月夜晴春弄柳，晴春弄柳岸啼莺。</p>
+</blockquote>
+<p>狭义的回文指的是正序逆序文字的顺序依旧不改变。今天描述的便是如何判断一个字串是否为回文。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>正序逆序都一样的字串，我们可以利用队列与栈的特性进行字串比较，具体代码:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STR_LENGH 300</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	利用栈和队列判断输入的字符串是否为回文串</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isMoslems</span><span class="params">(<span class="keyword">char</span>* str)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt; s;</span><br><span class="line">	<span class="built_in">queue</span>&lt;<span class="keyword">char</span>&gt; q;</span><br><span class="line">	<span class="built_in">string</span> moslems = str;</span><br><span class="line">	<span class="comment">//输入栈与队列的内容</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; moslems.length(); i++) &#123;</span><br><span class="line">		<span class="keyword">char</span> temp = moslems[i];</span><br><span class="line">		s.push(temp);</span><br><span class="line">		q.push(temp);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//char值相同继续判断，直到栈与队列为空</span></span><br><span class="line">	<span class="keyword">while</span> (!s.empty() &amp;&amp; !q.empty())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (s.top() != q.front()) &#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		s.pop();</span><br><span class="line">		q.pop();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//栈与队列全为空则为回文串</span></span><br><span class="line">	<span class="keyword">return</span> s.empty() &amp;&amp; q.empty();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> times = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (times&lt;<span class="number">4</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"输入一个字符串:"</span>;</span><br><span class="line">		<span class="keyword">char</span> str[STR_LENGH];</span><br><span class="line">		gets_s(str, STR_LENGH);</span><br><span class="line">		<span class="keyword">char</span>* ok = isMoslems(str) ? <span class="string">"YES"</span> : <span class="string">"NO"</span>;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; ok &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		times++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/26/设计模式-单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1015,7 +1172,7 @@ emoji，只能手动狗头)，希望大家能多交流以增进感情。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
