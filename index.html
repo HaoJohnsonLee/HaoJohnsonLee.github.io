@@ -394,7 +394,7 @@
 </blockquote>
 <p>3-5、 局部变量自增,此时 <strong>i</strong> 的值为 <strong>1</strong><br>6、 弹出栈顶元素，将值存入1st个局部变量中，此时 <strong>i</strong> 的值回到开始栈顶元素大小 <strong>0</strong><br>之后的代码就是输出格式了。<br>从上面的代码可以看出，<strong>i++</strong> 的值实际上不是赋给 <strong>i</strong>本身，而是另外的局部变量，最终 <strong>i</strong> 的值还是最初入栈的那个值。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>根据这些，可以知道，java在函数传递的安全性上做了足够的工作，你无法真正改变传入的参数，也就不会出现混乱的引用情况了。<br>在局部变量赋值的过程中，总是从栈中弹出值赋给局部变量，<strong>i++</strong> 的操作，只改变了局部变量的值，而为改变栈中元素的值，所以 <strong>i = i++ ;</strong> 的操作无法改变 <strong>i</strong> 的值，也就可以理解 <strong>i++;</strong> 不做赋值操作可以改变 <strong>i</strong> 的值了。</p>
-<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a href="hhttp://pbc5upl77.bkt.clouddn.com/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%20%E5%8D%B7%E2%85%A0%28%E5%8E%9F%E4%B9%A6%E7%AC%AC9%E7%89%88%29.pdf" target="_blank" rel="noopener">Java核心技术 卷Ⅰ(原书第9版)  </a><br><a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html" target="_blank" rel="noopener">Java Virtual Machine Specification-The class File Format</a>  </p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a href="http://pbc5upl77.bkt.clouddn.com/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%20%E5%8D%B7%E2%85%A0%28%E5%8E%9F%E4%B9%A6%E7%AC%AC9%E7%89%88%29.pdf" target="_blank" rel="noopener">Java核心技术 卷Ⅰ(原书第9版)  </a><br><a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html" target="_blank" rel="noopener">Java Virtual Machine Specification-The class File Format</a>  </p>
 
           
         
