@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="生活," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="先人的自由观庄子说“无己”、道法自然，泯灭自身，融入自然，顺应自然。着眼于自身的修养，物化个体，消灭个体作为生命的思考，这时人与人便都成了道中的一体。在他的眼里，蝴蝶同人是一样的，是在自然框架之下的物，谁是蝴蝶亦不可知。所谓的自由，在他表述下为“真人”，如他所说:   古之真人，不知说生，不知恶死;其出不訢，其入不距;翛然而往，翛然而来而已矣。不忘其所始，不求其所终;受而喜之，忘而复之。是之谓不以">
-<meta name="keywords" content="生活">
+<meta name="description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference inc = new ValueAndReference();        int i = 0;        inc.">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="自由">
-<meta property="og:url" content="https://haojohnsonlee.github.io/2018/06/27/自由/index.html">
+<meta property="og:title" content="java函数参数传递&amp;自增的坑">
+<meta property="og:url" content="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/index.html">
 <meta property="og:site_name" content="昊江的博客">
-<meta property="og:description" content="先人的自由观庄子说“无己”、道法自然，泯灭自身，融入自然，顺应自然。着眼于自身的修养，物化个体，消灭个体作为生命的思考，这时人与人便都成了道中的一体。在他的眼里，蝴蝶同人是一样的，是在自然框架之下的物，谁是蝴蝶亦不可知。所谓的自由，在他表述下为“真人”，如他所说:   古之真人，不知说生，不知恶死;其出不訢，其入不距;翛然而往，翛然而来而已矣。不忘其所始，不求其所终;受而喜之，忘而复之。是之谓不以">
+<meta property="og:description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference inc = new ValueAndReference();        int i = 0;        inc.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-01T02:06:54.344Z">
+<meta property="og:updated_time" content="2018-07-04T16:37:21.472Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自由">
-<meta name="twitter:description" content="先人的自由观庄子说“无己”、道法自然，泯灭自身，融入自然，顺应自然。着眼于自身的修养，物化个体，消灭个体作为生命的思考，这时人与人便都成了道中的一体。在他的眼里，蝴蝶同人是一样的，是在自然框架之下的物，谁是蝴蝶亦不可知。所谓的自由，在他表述下为“真人”，如他所说:   古之真人，不知说生，不知恶死;其出不訢，其入不距;翛然而往，翛然而来而已矣。不忘其所始，不求其所终;受而喜之，忘而复之。是之谓不以">
+<meta name="twitter:title" content="java函数参数传递&amp;自增的坑">
+<meta name="twitter:description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference inc = new ValueAndReference();        int i = 0;        inc.">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://haojohnsonlee.github.io/2018/06/27/自由/"/>
+  <link rel="canonical" href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/"/>
 
 
 
 
 
-  <title>自由 | 昊江的博客</title>
+  <title>java函数参数传递&自增的坑 | 昊江的博客</title>
   
 
 
@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/06/27/自由/">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnson Lee">
@@ -289,7 +289,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">自由</h1>
+          <h1 class="post-title" itemprop="name headline">java函数参数传递&自增的坑</h1>
         
 
         <div class="post-meta">
@@ -301,8 +301,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-27T21:46:10+08:00">
-                2018-06-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T23:35:12+08:00">
+                2018-07-04
               </time>
             
 
@@ -333,7 +333,7 @@
                   <span class="post-meta-item-text">Words count in article</span>
                 
                 <span title="Words count in article">
-                  1,556
+                  812
                 </span>
               
 
@@ -349,7 +349,7 @@
                   <span class="post-meta-item-text">Reading time</span>
                 
                 <span title="Reading time">
-                  5 mins
+                  3 mins
                 </span>
               
             </div>
@@ -370,19 +370,26 @@
       
 
       
-        <h4 id="先人的自由观"><a href="#先人的自由观" class="headerlink" title="先人的自由观"></a>先人的自由观</h4><p>庄子说“无己”、道法自然，泯灭自身，融入自然，顺应自然。着眼于自身的修养，物化个体，消灭个体作为生命的思考，这时人与人便都成了道中的一体。在他的眼里，蝴蝶同人是一样的，是在自然框架之下的物，谁是蝴蝶亦不可知。所谓的自由，在他表述下为“真人”，如他所说: </p>
+        <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>有一段这样的代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValueAndReference</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ValueAndReference inc = <span class="keyword">new</span> ValueAndReference();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        inc.fermin(i);</span><br><span class="line">        i= i ++;</span><br><span class="line">        System.out.println(i);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fermin</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>刚开始以为输出是”1”,以为只有值传递的坑，发现自增的坑最终坑了。<br>最后输出是 <strong>0</strong>，两次”<strong>++</strong>“操作都没能改变 <strong>i</strong> 的值。 </p>
+<h2 id="值传递"><a href="#值传递" class="headerlink" title="值传递"></a>值传递</h2><p>起初，以为在java中，与其他语言(如C++)有相同参数传递机制，值传递与引用传递，而且一直这样实践着，后来发现在java中<strong>所有的参数传递都是值传递</strong>，在《java核心技术卷一(原书第九版)》中提到</p>
 <blockquote>
-<p>古之真人，不知说生，不知恶死;其出不訢，其入不距;翛然而往，翛然而来而已矣。不忘其所始，不求其所终;受而喜之，忘而复之。是之谓不以心捐道，不以人助天。是之谓真人。</p>
+<p>java程序设计语言对对象采用的不是引用调用，实际上，对象引用进行的是值传递。  </p>
 </blockquote>
-<p>“不以人助天”，郭象解释为“真人知用，心则背道，助天则伤生，故不为也”。顺应自然，无为，无所待即是他的自由。他批判了文明的虚伪性，怀疑、猜忌、虚荣、仇恨、背叛等等人的劣根性在文明的裹挟下短暂“消失”，但并没有消除人心中的焦虑不安。自然状态下的人，没有过多的欲望与思考，也就失去了焦虑的源头。舜曾以天下让善卷，善卷自得于逍遥天地之间，日出而作，日落而息，拒绝了舜的禅让。这样的状态便是庄子眼中的自由，保持自然的状态，他在精神上是无比安宁的。  </p>
-<p>邓晓芒在《康德自由概念的三个层次》中将康德的自由观划分为“先验的自由” 、“ 实践的自由”和“ 自由感” 三个层次。</p>
-<ol>
-<li>在机械因果律中永远需要追溯更早的原因，每个事件的发生必然需要去追溯更早的事件。但这无法解释这个世界的的现实存在的理由，是什么让这个世界产生？世界的源头又是什么?由此，必须假定一个自发的，它本身的发生并不取决于其他任何元素，这种意义上来说，此事件是自由的。这样不妨假定世界上存在各种时间序列上自发发生的，它们有着自由行动的能力，不取决于任何事物。它提供了一个可归咎性的依据，并不违反因果律，仅仅是为其提供了因果过程的开端。此种自由的内涵一方面在于人们摆脱感性认识，以及一切因果律的约束的消极的自由；;另一方面它意味着自行开始一个因果系列的原因性, 这是积极意义上的自由。这两方面的内容实际上也正是一般实践的自由的内容,所以康德说:“值得特别注意的是,以这个自由的先验理念为根据的是自由的实践概念”。</li>
-<li>实践的自由本身也分为两个层次,即“自由的任意”和“自由意志”。<br>在我看来自由的任意是感性的，也是朴素的自由，与庄子“无己”不一致的是其强调人的主观性。之所以说它是朴素的自由，是因为它在人性的基础上，突出了人的感性认识对其行动的决定力，其是无法预计的。当人能够独立于感性认识去规定自己，也就达到了自由的任意，此时其已然具有理性的实践的影子。<br>意志与任意并非两个独立的概念，它们都属于人的欲求领域。自由的任意并没有摆脱感性的个人经验主义，虽然已然发展出了理性的观念，但其并没有完全摆脱感性认识，此时的理性是为了某个欲求或利益服务，并不是真正自由的。自由意志是极为理性的，只有完全摆脱了感性的裹挟，使理性本身具有了超越一切感性欲求之上的尊严，才能获得一贯的自由。</li>
-<li>康德认为,自由作为人的本体不可能是感性的,而在反思判断力中所出现的情感领域中的“自由”正因为是由“反思”带出来的。我们在感受自由的过程中反思自己的自由主体，从而唤起进一步对自由追寻的热忱，是人理性反思的正反馈过程。看起来这是人的感性认识，但其确是人在感受自己内心的道德价值进行的理性思考做出的动物性表现，建立在先验的自由和实践的自由之上的外在表现。  </li>
-</ol>
-<p>谈到胡适对于自由的追寻耐人寻味。胡适先生在<a href="http://47.93.198.51/temp/%E5%AE%B9%E5%BF%8D%E4%B8%8E%E8%87%AA%E7%94%B1_%E8%83%A1%E9%80%82.pdf" target="_blank" rel="noopener">容忍与自由</a>中提到，真正的自由来自于容忍。一切对异端的排斥，迫害都来自于深信自己的理念的准确性，而对其他想法行为表现出极度不容忍了。从历史的角度上来看，统治阶级排斥异端，排斥其他于统治不利思想，被统治者打着自由的旗号推翻统治者之后往往又会走上不自由的老路。教皇打着上帝的权威来统治人民，上帝是不会犯错的，一切反对者、异己者都是魔鬼的教条了，一切不容忍根源在于“我不会错”的理念。从科学的角度上来说，怀疑是学术发展的强大动力；从个人意志角度上来说，不断地自我怀疑，接纳新思想、新理念是个人思想进步地源泉。在这方面看来，容忍确实能够给自由带来土壤。<br>这样的容忍，建立在个人独立思考的自由精神之上，而不是把别人的眼睛当眼睛，把别人的耳朵当耳朵，把别人的脑子当脑子。同时，不迷信权威，不断自我怀疑，以存疑的眼光、批判的态度去评估新的想法。</p>
-<h4 id="我的自由观"><a href="#我的自由观" class="headerlink" title="我的自由观"></a>我的自由观</h4><p>小子我也不知道，也在探索。</p>
+<p>这就决定了以下几点:  </p>
+<ul>
+<li>1.函数参数接收的永远是真正传入对象的拷贝。<br>2.函数内部无法改变真正对象的值。具体来说，基本数据类型值无法改变(如上例中的 i )，非基本类型无法改变其所指向的对象，也就是无法让其指向新对象，但是可以改变对象内部的状态。</li>
+</ul>
+<p>也就是说，在java中，不存在引用传递这一说。</p>
+<h2 id="i-i-发生了什么？"><a href="#i-i-发生了什么？" class="headerlink" title="i = i++ 发生了什么？"></a>i = i++ 发生了什么？</h2><p>从下面这个小例子出发:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        i = i++;</span><br><span class="line">        System.out.print(i);    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样的，该例子输出为 <strong>0</strong>  。<br>经编译器编译后使用javap工具得到编译后的结果如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">  public Test();</span><br><span class="line">    Code:</span><br><span class="line">       0: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">       4: return</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    Code:</span><br><span class="line">       0: iconst_0</span><br><span class="line">       1: istore_1</span><br><span class="line">       2: iload_1</span><br><span class="line">       3: iinc          1, 1</span><br><span class="line">       6: istore_1</span><br><span class="line">       7: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">      10: iload_1</span><br><span class="line">      11: invokevirtual #3                  // Method java/io/PrintStream.print:(I)V</span><br><span class="line">      14: return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关注于main方法对 <strong>i</strong> 变量的处理过程。<br>0、 将 int 类型 <strong>0</strong> 入栈<br>1、 弹出栈顶元素，将值存入1st个局部变量中，即 <strong>i</strong><br>2、 从<strong>i</strong>中取出数值入栈    </p>
+<blockquote>
+<p>int i = 0;  </p>
+</blockquote>
+<p>3-5、 局部变量自增,此时 <strong>i</strong> 的值为 <strong>1</strong><br>6、 弹出栈顶元素，将值存入1st个局部变量中，此时 <strong>i</strong> 的值回到开始栈顶元素大小 <strong>0</strong><br>之后的代码就是输出格式了。<br>从上面的代码可以看出，<strong>i++</strong> 的值实际上不是赋给 <strong>i</strong>本身，而是另外的局部变量，最终 <strong>i</strong> 的值还是最初入栈的那个值。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>根据这些，可以知道，java在函数传递的安全性上做了足够的工作，你无法真正改变传入的参数，也就不会出现混乱的引用情况了。<br>在局部变量赋值的过程中，总是从栈中弹出值赋给局部变量，<strong>i++</strong> 的操作，只改变了局部变量的值，而为改变栈中元素的值，所以 <strong>i = i++ ;</strong> 的操作无法改变 <strong>i</strong> 的值，也就可以理解 <strong>i++;</strong> 不做赋值操作可以改变 <strong>i</strong> 的值了。</p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a href="hhttp://pbc5upl77.bkt.clouddn.com/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%20%E5%8D%B7%E2%85%A0%28%E5%8E%9F%E4%B9%A6%E7%AC%AC9%E7%89%88%29.pdf" target="_blank" rel="noopener">Java核心技术 卷Ⅰ(原书第9版)  </a><br><a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html" target="_blank" rel="noopener">Java Virtual Machine Specification-The class File Format</a>  </p>
 
       
     </div>
@@ -403,7 +410,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://haojohnsonlee.github.io/2018/06/27/自由/" title="自由">https://haojohnsonlee.github.io/2018/06/27/自由/</a>
+    <a href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/" title="java函数参数传递&自增的坑">https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -418,7 +425,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/生活/" rel="tag"># 生活</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -431,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/21/是啊，要毕业了/" rel="next" title="是啊，要毕业了">
-                <i class="fa fa-chevron-left"></i> 是啊，要毕业了
+              <a href="/2018/07/04/java杂记/" rel="next" title="java杂记">
+                <i class="fa fa-chevron-left"></i> java杂记
               </a>
             
           </div>
@@ -440,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/30/N-Queen/" rel="prev" title="N-Queen">
-                N-Queen <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -570,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#先人的自由观"><span class="nav-number">1.</span> <span class="nav-text">先人的自由观</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我的自由观"><span class="nav-number">2.</span> <span class="nav-text">我的自由观</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值传递"><span class="nav-number">2.</span> <span class="nav-text">值传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i-i-发生了什么？"><span class="nav-number">3.</span> <span class="nav-text">i = i++ 发生了什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reference"><span class="nav-number">4.1.</span> <span class="nav-text">reference</span></a></li></ol></li></ol></div>
             
 
           </div>

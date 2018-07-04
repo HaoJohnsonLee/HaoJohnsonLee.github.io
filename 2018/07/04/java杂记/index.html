@@ -94,22 +94,23 @@
 
 
 
-<meta name="description" content="byte -&amp;gt; shor t-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要">
+<meta name="description" content="byte -&amp;gt; short-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要大">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java杂记">
 <meta property="og:url" content="https://haojohnsonlee.github.io/2018/07/04/java杂记/index.html">
 <meta property="og:site_name" content="昊江的博客">
-<meta property="og:description" content="byte -&amp;gt; shor t-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要">
+<meta property="og:description" content="byte -&amp;gt; short-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要大">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://pbc5upl77.bkt.clouddn.com/2527957_1498180954324_D83CBF646B3F43FE947460F6D7231780.png">
 <meta property="og:image" content="http://pbc5upl77.bkt.clouddn.com/7010483_1490969513544_B5CDD8870777EEC7D957D189E573CF3B.png">
 <meta property="og:image" content="http://pbc5upl77.bkt.clouddn.com/springMVCA.png">
 <meta property="og:image" content="http://pbc5upl77.bkt.clouddn.com/jsp_life_cycle.jpg">
-<meta property="og:updated_time" content="2018-07-04T14:00:41.651Z">
+<meta property="og:image" content="http://pbc5upl77.bkt.clouddn.com/collection_uml.jpg">
+<meta property="og:updated_time" content="2018-07-04T15:35:50.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java杂记">
-<meta name="twitter:description" content="byte -&amp;gt; shor t-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要">
+<meta name="twitter:description" content="byte -&amp;gt; short-&amp;gt; char -&amp;gt; int -&amp;gt; long -&amp;gt; float -&amp;gt; double   方法重载(Overload)的要求: 函数名要一致。 形参列表不一致（形参的个数或形参 的类型不一致） 与返回值类型无关。   方法重写(Override)要注意的事项： 方法重写时,方法名与形参列表必须一致。 方法重写时,子类的权限修饰符必须要大">
 <meta name="twitter:image" content="http://pbc5upl77.bkt.clouddn.com/2527957_1498180954324_D83CBF646B3F43FE947460F6D7231780.png">
 
 
@@ -338,7 +339,7 @@
                   <span class="post-meta-item-text">Words count in article</span>
                 
                 <span title="Words count in article">
-                  1,516
+                  1,699
                 </span>
               
 
@@ -376,7 +377,7 @@
 
       
         <ol>
-<li>byte -&gt; shor t-&gt; char -&gt; int -&gt; long -&gt; float -&gt; double</li>
+<li>byte -&gt; short-&gt; char -&gt; int -&gt; long -&gt; float -&gt; double</li>
 <li><img src="http://pbc5upl77.bkt.clouddn.com/2527957_1498180954324_D83CBF646B3F43FE947460F6D7231780.png" alt="image"></li>
 <li><img src="http://pbc5upl77.bkt.clouddn.com/7010483_1490969513544_B5CDD8870777EEC7D957D189E573CF3B.png" alt="image"></li>
 <li>方法重载(Overload)的要求:<ol>
@@ -456,8 +457,16 @@
 <li>java.sql 部分接口继承关系</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">PreparedStatment--&gt;Statement</span><br><span class="line">CallableStatment--&gt;PreparedStatment</span><br></pre></td></tr></table></figure>
-<ol start="21">
+<p>21.<a href="http://lucaslee.iteye.com/blog/49292" target="_blank" rel="noopener">PreparedStatment与Statment性能对比</a> </p>
+<ol start="22">
 <li>接口中的变量默认是public static final 的，方法默认是public abstract 的。</li>
+<li>java 集合类图 <img src="http://pbc5upl77.bkt.clouddn.com/collection_uml.jpg" alt="image"></li>
+<li>public class ThreadLocal<t>:<ol>
+<li>ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量。</li>
+<li>ThreadLocal中定义了一个哈希表用于为每个线程都提供一个变量的副本。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The entries in this hash map extend WeakReference, using</span></span><br><span class="line"><span class="comment">     * its main ref field as the key (which is always a</span></span><br><span class="line"><span class="comment">     * ThreadLocal object).  Note that null keys (i.e. entry.get()</span></span><br><span class="line"><span class="comment">     * == null) mean that the key is no longer referenced, so the</span></span><br><span class="line"><span class="comment">     * entry can be expunged from table.  Such entries are referred to</span></span><br><span class="line"><span class="comment">     * as "stale entries" in the code that follows.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line"></span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="keyword">super</span>(k);</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</t></li>
 </ol>
 
       
@@ -516,6 +525,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/04/java函数参数传递&自增的坑/" rel="prev" title="java函数参数传递&自增的坑">
+                java函数参数传递&自增的坑 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -585,7 +598,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
