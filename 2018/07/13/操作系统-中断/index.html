@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Computer Systems," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="综述在x86处理器下，从用户态到核心态的转换分为三种情形:  中断： 由硬件信号引发的，分为可屏蔽和不可屏蔽中断   异常 由指令执行引发的，比如除零异常 80x86处理器发布了大约20种不同的异常 对于某些异常，CPU会在执行异常处理程序之前产生硬件出错码，并压入内核态堆栈   系统调用 异常的一种，用户态到内核态的唯一入口中断过程在x86保护模式运行环境下，采用门(gate) 描述符数据结构表">
+<meta name="keywords" content="Computer Systems">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统-中断">
+<meta property="og:url" content="https://haojohnsonlee.github.io/2018/07/13/操作系统-中断/index.html">
+<meta property="og:site_name" content="昊江的博客">
+<meta property="og:description" content="综述在x86处理器下，从用户态到核心态的转换分为三种情形:  中断： 由硬件信号引发的，分为可屏蔽和不可屏蔽中断   异常 由指令执行引发的，比如除零异常 80x86处理器发布了大约20种不同的异常 对于某些异常，CPU会在执行异常处理程序之前产生硬件出错码，并压入内核态堆栈   系统调用 异常的一种，用户态到内核态的唯一入口中断过程在x86保护模式运行环境下，采用门(gate) 描述符数据结构表">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-13T07:32:25.077Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统-中断">
+<meta name="twitter:description" content="综述在x86处理器下，从用户态到核心态的转换分为三种情形:  中断： 由硬件信号引发的，分为可屏蔽和不可屏蔽中断   异常 由指令执行引发的，比如除零异常 80x86处理器发布了大约20种不同的异常 对于某些异常，CPU会在执行异常处理程序之前产生硬件出错码，并压入内核态堆栈   系统调用 异常的一种，用户态到内核态的唯一入口中断过程在x86保护模式运行环境下，采用门(gate) 描述符数据结构表">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haojohnsonlee.github.io/2018/07/13/操作系统-中断/"/>
+
+
+
+
+
+  <title>操作系统-中断 | 昊江的博客</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-119891946-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">昊江的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">以后将会在此发布一些生活的、技术的、学业的各种分享在这里，以期记录我的点点滴滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/13/操作系统-中断/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统-中断</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-13T14:18:17+08:00">
+                2018-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  1,690
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  7 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>在x86处理器下，从用户态到核心态的转换分为三种情形:</p>
+<ol>
+<li>中断：<ul>
+<li>由硬件信号引发的，分为可屏蔽和不可屏蔽中断</li>
+</ul>
+</li>
+<li>异常<ul>
+<li>由指令执行引发的，比如除零异常</li>
+<li>80x86处理器发布了大约20种不同的异常</li>
+<li>对于某些异常，CPU会在执行异常处理程序之前产生硬件出错码，并压入内核态堆栈</li>
+</ul>
+</li>
+<li>系统调用<ul>
+<li>异常的一种，用户态到内核态的唯一入口<h2 id="中断过程"><a href="#中断过程" class="headerlink" title="中断过程"></a>中断过程</h2>在x86保护模式运行环境下，采用门(gate) 描述符数据结构表示中断向量。<br>基于uCore的实现，主要表现Interrupt Gate和Trap Gate两种类型的门描述符。<br>其主要结构如下(64bits):<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STS_IG32        0xE            <span class="comment">// 32-bit Interrupt Gate</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STS_TG32        0xF            <span class="comment">// 32-bit Trap Gate</span></span></span><br><span class="line"></span><br><span class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">gatedesc</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_off_15_0 : <span class="number">16</span>;        <span class="comment">// low 16 bits of offset in segment</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_ss : <span class="number">16</span>;            <span class="comment">// segment selector</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_args : <span class="number">5</span>;            <span class="comment">// # args, 0 for interrupt/trap gates</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_rsv1 : <span class="number">3</span>;            <span class="comment">// reserved(should be zero I guess)</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_type : <span class="number">4</span>;            <span class="comment">// type(STS_&#123;TG,IG32,TG32&#125;)</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_s : <span class="number">1</span>;                <span class="comment">// must be 0 (system)</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_dpl : <span class="number">2</span>;            <span class="comment">// descriptor(meaning new) privilege level</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_p : <span class="number">1</span>;                <span class="comment">// Present</span></span><br><span class="line">    <span class="keyword">unsigned</span> gd_off_31_16 : <span class="number">16</span>;        <span class="comment">// high bits of offset in segment</span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p>中断处理程序的入口地址 = 基地址(在段描述符中) + 偏移(中断描述符中)。<br>在结构<code>gatedesc</code>中描述了该<code>offset</code>的值，还有相关的dpl、typed等。我们在这一步需要关心的是<code>gd_ss(段选择符)</code>的值，该指针指向<code>GDT(全局描述符表)</code>中的段描述符的位置，从而得到基地址——&gt;中断处理程序的起始地址。<br>全部软硬件过程如下:</p>
+<ul>
+<li>确定与中断或异常关联的向量i</li>
+<li>通过IDTR寄存器找到IDT表，获得中断描述符（表中的第i项）</li>
+<li>从GDTR寄存器获得GDT的地址；结合中断描述符中的段选择符，在GDT表获取对应的段描述符；从该段描述符中得到中断或异常处理程序所在的段基址</li>
+<li>特权级检查(dpl)</li>
+<li>检查是否发生了特权级的变化，如果是，则进行堆栈切换(必须使用与新的特权级相关的栈)</li>
+<li>硬件压栈，保存上下文环境；如果异常产生了硬件出错码，也将它保存在栈中</li>
+<li>如果是中断，清IF(禁止中断)位</li>
+<li>通过中断描述符中的段内偏移量和段描述符中的基地址，找到中断/异常处理程序的入口地址，执行其第一条指令</li>
+</ul>
+<h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><ol>
+<li>用户在编程时可以调用的操作系统功能</li>
+<li>系统调用是操作系统提供给编程人员的唯一接口</li>
+<li>使CPU状态从用户态陷入内核态</li>
+<li>每个操作系统都提供上百种系统调用（进程控制、进程通信、文件使用、目录操作、设备管理、信息维护等）</li>
+<li>西同函数库/API接口通过系统调用给用户提供功能(大部分)，而应用程序也可以直接使用系统调用。<h3 id="与中断联系"><a href="#与中断联系" class="headerlink" title="与中断联系"></a>与中断联系</h3>系统调用是一个特殊的中断过程，当应用程序使用系统调用时，在用户态下向内核发出陷入指令(亦称访管指令)，之后将系统调用功能号和参数传递给内核，同样通过中断的方式寻找到处理该调用的应用程序。<br>常用的3种参数传递实现方法:</li>
+<li>由陷入指令自带参数：陷入指令的长度有限，且还要携带系统调用功能号，只能自带有限的参数</li>
+<li>通过通用寄存器传递参数：这些寄存器是操作系统和用户程序都能访问的，但寄存器的个数会限制传递参数的数量(常用)</li>
+<li>在内存中开辟专用堆栈区来传递参数<h3 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h3>当CPU执行到特殊的陷入指令时:</li>
+</ol>
+<ul>
+<li>中断/异常机制：硬件保护现场；通过查中断向量表把控制权转给系统调用总入口程序</li>
+<li>系统调用总入口程序：保存现场；将参数保存在内核堆栈里；通过查系统调用表把控制权转给相应的系统调用处理例程或内核函数</li>
+<li>执行系统调用例程</li>
+<li>恢复现场，返回用户程序<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3>C 源程序<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> <span class="built_in">string</span>[<span class="number">5</span>] = &#123;‘H’, ‘e’, ‘l’, ‘l’, ‘o’, ‘!’, ‘\n’&#125;;</span><br><span class="line">    write(<span class="number">1</span>, <span class="built_in">string</span>, <span class="number">7</span>);  <span class="comment">//系统调用</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Linux系统下执行过程:</p>
+<ol>
+<li>用户态下调用C库的库函数write()</li>
+<li>封装后的write()先做好参数传递工作，然后使用int $0x80指令产生一次异常</li>
+<li>CPU通过0x80号在IDT中找到对应的服务例程system_call()，并调用之</li>
+<li>system_call()：将参数保存在内核栈；根据系统调用号索引系统调用表，找到系统调用程序入口，比如sys_write()</li>
+<li>sys_write()执行完后，经过ret_from_sys_call()例程返回用户程序</li>
+</ol>
+<p>ASM源码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.section .data</span><br><span class="line">output:</span><br><span class="line">    .ascii “Hello!\n”</span><br><span class="line">output_end:</span><br><span class="line">    .equ len, output_end - output</span><br><span class="line">.section .text</span><br><span class="line">.globl _start</span><br><span class="line">_start:</span><br><span class="line">    movl $4, %eax ＃eax存放系统调用号</span><br><span class="line">    movl $1, %ebx</span><br><span class="line">    movl $output, %ecx</span><br><span class="line">    movl $len, %edx</span><br><span class="line">    int $0x80 ＃引发一次系统调用</span><br><span class="line">end:</span><br><span class="line">    movl $1, %eax ＃1号系统调用 返回用户态</span><br><span class="line">    movl $0, %ebx</span><br><span class="line">    int $0x80</span><br></pre></td></tr></table></figure></p>
+<h3 id="x86下Linux系统调用"><a href="#x86下Linux系统调用" class="headerlink" title="x86下Linux系统调用"></a>x86下Linux系统调用</h3><ul>
+<li>陷入指令: <strong>int $0x80</strong></li>
+<li><p>门描述符</p>
+<ol>
+<li>系统初始化时：对IDT表中的128号门初始化</li>
+<li>门描述符的2、3两个字节设置为内核代码段选择符<br>0、1、6、7四个字节设置为偏移量(指向system_call()) (与上述给出的数据结构一致)</li>
+<li>门类型:0xE - TG（此处使用陷阱门，表示同时还可以接受中断,不自动关闭中断）</li>
+<li>DPL : 3 (与用户权限相同，表明用户进程可以使用该门描述符)</li>
+</ol>
+</li>
+<li><p>一些Linux系统调用号:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#define __NR_exit 1</span><br><span class="line">#define __NR_fork 2</span><br><span class="line">#define __NR_read 3</span><br><span class="line">#define __NR_write 4</span><br><span class="line">#define __NR_open 5</span><br><span class="line">#define __NR_close 6</span><br><span class="line">#define __NR_waitpid 7</span><br><span class="line">#define __NR_creat 8</span><br><span class="line">#define __NR_link 9</span><br><span class="line">#define __NR_unlink 10</span><br><span class="line">#define __NR_execve 11</span><br><span class="line">#define __NR_chdir 12</span><br><span class="line">#define __NR_time 13</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>OS底层工作过程</p>
+<ol>
+<li>硬件压栈：PC、PSW等</li>
+<li>硬件从中断向量装入新的程序计数器等</li>
+<li>汇编语言过程保存寄存器值</li>
+<li>汇编语言过程设置新的堆栈</li>
+<li>C语言中断服务程序运行（例：读并缓冲输入）</li>
+<li>进程调度程序决定下一个将运行的进程</li>
+<li>C语言过程返回至汇编代码</li>
+<li>汇编语言过程开始运行新的当前进程</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Johnson Lee
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://haojohnsonlee.github.io/2018/07/13/操作系统-中断/" title="操作系统-中断">https://haojohnsonlee.github.io/2018/07/13/操作系统-中断/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Computer-Systems/" rel="tag"># Computer Systems</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/12/CAS-in-Java/" rel="next" title="CAS in Java">
+                <i class="fa fa-chevron-left"></i> CAS in Java
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjgwOS8xMzM0NQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Johnson Lee" />
+          <p class="site-author-name" itemprop="name">Johnson Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description">以后将会在此发布一些生活的、技术的、学业的各种分享在这里，以期记录我的点点滴滴</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#综述"><span class="nav-number">1.</span> <span class="nav-text">综述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断过程"><span class="nav-number">2.</span> <span class="nav-text">中断过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统调用"><span class="nav-number">3.</span> <span class="nav-text">系统调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#与中断联系"><span class="nav-number">3.1.</span> <span class="nav-text">与中断联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行过程"><span class="nav-number">3.2.</span> <span class="nav-text">执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">3.3.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x86下Linux系统调用"><span class="nav-number">3.4.</span> <span class="nav-text">x86下Linux系统调用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Johnson Lee</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
