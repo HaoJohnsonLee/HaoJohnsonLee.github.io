@@ -273,6 +273,203 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/19/ClassLoader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/19/ClassLoader/" itemprop="url">Java类加载机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-19T09:01:12+08:00">
+                2018-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  1,745
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  7 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>虚拟机将描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可被直接使用的Java类型。<br>Java中，类的加载、连接和初始化都是在程序的运行期间完成的，这将给程序带来性能上的开销，但同时也带来的高度的灵活性。如用户编写的面向接口的应用程序，允许用户在程序运行期间指定其具体的实现类。</p>
+<h2 id="类加载的时机"><a href="#类加载的时机" class="headerlink" title="类加载的时机"></a>类加载的时机</h2><p>在虚拟机规范中，严格规定了有且只有5种情况必须对类进行初始化。</p>
+<ol>
+<li>遇到 new、getstatic、putstatic、invokestatic这四条指令时，若没有对类进行初始化，则需要先初始化该类。产生这四条指令的常见场景为:<ul>
+<li>使用<code>new</code>关键字实例化对象时</li>
+<li>读取或设置一个类的静态字段时(被final修饰的字段、已在编译期把结果放入常量池的静态字段除外)</li>
+<li>调用类的静态方法时</li>
+</ul>
+</li>
+<li>使用java.lang.reflect包的方法对类进行反射调用时</li>
+<li>当初始化一个类时，若父类未初始化，先初始化其父类</li>
+<li>虚拟器启动时，主类必须先初始化</li>
+<li>使用java1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后解析结果REF_getStatic、REF_putStatic、REF_invokeStatic的方法句柄，并且对应类未实例化，则需要先对其进行初始化。<br>其五种对类的主动引用必须对类进行初始化，而某些被动引用则不会引发。<h3 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h3></li>
+<li>子类引用父类静态字段，子类将不被初始化<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"SuperClass init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String hello = <span class="string">"Hello World"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubClass</span> <span class="keyword">extends</span> <span class="title">SuperClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"SubClass init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"Main init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(SubClass.hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>以上<code>main</code>方法中，<code>SubClass</code>调用<code>SuperClass</code>中的静态字段<code>hello</code>,其输出为:</p>
+<blockquote>
+<p>Main init<br>SuperClass init<br>Hello World</p>
+</blockquote>
+<p>表明类的初始化顺序为 <code>Main</code>-&gt;<code>SuperClass</code>,<code>SubClass</code>并没有被初始化。</p>
+<ol start="2">
+<li>使用数组定义引用类，不会触发初始化。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将main 方法改成如下格式:</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"Main init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SubClass[] subClasses = <span class="keyword">new</span> SubClass[<span class="number">10</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line">输出为</span><br><span class="line">&gt; Main init</span><br><span class="line"></span><br><span class="line">`SuperClass`并未被初始化</span><br><span class="line"><span class="number">3</span>. 被<span class="keyword">final</span>修饰的静态字段引用不会初始化类</span><br><span class="line">```java</span><br><span class="line"><span class="comment">//修改SuperClass、Main结构如下</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"SuperClass init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String hello = <span class="string">"Hello World"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"Main init"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(SubClass.hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>输出为:</p>
+<blockquote>
+<p>Main init<br>Hello World</p>
+</blockquote>
+<p><code>SuperClass</code>并未被初始化 </p>
+<h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>在加载阶段，虚拟机需要完成:<br>1) 通过类的全限定名来获取定义此类的二进制字节流(从文件、网络、运行时生成、数据库读取、其他文件生成如JSP等)<br>2) 将字节流代表的静态存储结构转化为方法区的运行时数据结构<br>3) 在内存中生成一个代表此类的java.lang.Class对象，作为方法区此类数据访问入口</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>验证是连接阶段的第一步，确保Class文件字节流符合当前虚拟机的要求，不会危害安全。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>该阶段为类变量分配内存空间并初始化，其初始值通常为该数据类型的默认值，具体参见<a href="https://haojohnsonlee.github.io/2018/07/04/java%E6%9D%82%E8%AE%B0/">java杂记</a>,而不通常的特殊情况则是该类变量被声明为<code>ConstantValue</code>，被<code>final</code>修饰，则会根据用户设置的值初始化变量。</p>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>解析阶段是虚拟机将常量池内符号引用替换为直接引用的过程，主要针对类或者接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化是类加载过程最后一步，也是开始执行Java程序代码的第一步。<br>在准备阶段，虚拟机已经给类变量赋初始值，而在此阶段，虚拟机会将按照用户计划初始化变量。<br>初始化阶段是类构造器<code>&lt;client&gt;()</code>的执行过程，其执行所有类变量的赋值动作和static{}块中的语句，执行顺序由语句在文件中出现的顺序一致。static块中只能访问到语句块之前声明的变量，定义在之后的变量可以进行赋值操作(准备阶段已经分配空间)而不能访问。如一下非法引用:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticRef</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        i = <span class="number">128</span>;   <span class="comment">//合法赋值</span></span><br><span class="line">        System.out.println(i);  <span class="comment">//非法引用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> i = <span class="number">1</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>&lt;client&gt;()</code>方法不需要显式地调用父类构造器，虚拟机会保证子类<code>&lt;client&gt;()</code>执行之前，父类<code>&lt;client&gt;()</code>方法已经执行完毕。所以父类static 字段、块必然先于子类执行。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//考虑以下两个类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        a = <span class="number">2</span>;</span><br><span class="line">        System.out.println(<span class="string">"a= "</span> + a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Parent</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        a = <span class="number">3</span>;</span><br><span class="line">        System.out.println(<span class="string">"a= "</span> + a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> b = a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(Child.b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出为:</p>
+<blockquote>
+<p>a= 2<br>a= 3<br>3</p>
+</blockquote>
+<p>可见子类staitc执行晚于父类</p>
+<p><code>&lt;client&gt;()</code>方法对于类或接口不是必需的，当该类没有static{}也不必对变量赋值，则不会为其生成<code>&lt;client&gt;()</code>方法。部分接口也会有<code>&lt;client&gt;()</code>方法，但与类不同的是，其不需要先执行父接口的<code>&lt;client&gt;()</code>方法，只有当父接口中定义的变量使用时，才会初始化父接口，实现类同理。<br>在多线程环境下<code>&lt;client&gt;()</code>的执行会被保证只有一个线程执行该类的<code>&lt;client&gt;()</code>方法，其他线程会被阻塞，知道该线程执行<code>&lt;client&gt;()</code>完毕。考虑如下场景:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLoopClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread() + <span class="string">"init DeadLoopClass"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"Sleep 5 seconds"</span>);</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Runnable script = ()-&gt;&#123;</span><br><span class="line">            System.out.println(Thread.currentThread() + <span class="string">" start"</span>);</span><br><span class="line">            DeadLoopClass dlc = <span class="keyword">new</span> DeadLoopClass();</span><br><span class="line">            System.out.println(Thread.currentThread() + <span class="string">" over"</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        Thread thread1 = <span class="keyword">new</span> Thread(script);</span><br><span class="line">        Thread thread2 = <span class="keyword">new</span> Thread(script);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出为:</p>
+<blockquote>
+<p>Thread[Thread-1,5,main] start<br>Thread[Thread-0,5,main] start<br>Thread[Thread-1,5,main]init DeadLoopClass<br>Sleep 5 seconds<br>Thread[Thread-1,5,main] over<br>Thread[Thread-0,5,main] over</p>
+</blockquote>
+<p>当线程<code>Thread[Thread-0,5,main]</code> 初始化<code>DeadLoopClass</code>时，陷入阻塞，导致线程<code>Thread[Thread-1,5,main]</code>无法对该类进行初始化。当第一个线程对其初始化完毕后，第二个线程才可继续执行，但不必再次对该类进行初始化。</p>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/18/HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1791,253 +1988,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/java杂记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnson Lee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="昊江的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/java杂记/" itemprop="url">java杂记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T19:16:17+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article</span>
-                
-                <span title="Words count in article">
-                  1,699
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time</span>
-                
-                <span title="Reading time">
-                  6 mins
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>byte -&gt; short-&gt; char -&gt; int -&gt; long -&gt; float -&gt; double</li>
-<li><img src="http://pbc5upl77.bkt.clouddn.com/2527957_1498180954324_D83CBF646B3F43FE947460F6D7231780.png" alt="image"></li>
-<li><img src="http://pbc5upl77.bkt.clouddn.com/7010483_1490969513544_B5CDD8870777EEC7D957D189E573CF3B.png" alt="image"></li>
-<li>方法重载(Overload)的要求:<ol>
-<li>函数名要一致。</li>
-<li>形参列表不一致（形参的个数或形参 的类型不一致）</li>
-<li>与返回值类型无关。</li>
-</ol>
-</li>
-<li>方法重写(Override)要注意的事项：<ol>
-<li>方法重写时,方法名与形参列表必须一致。</li>
-<li>方法重写时,子类的权限修饰符必须要大于或者等于父类的权限修饰符。</li>
-<li>方法重写时,子类的返回值类型必须要小于或者 等于父类的返回值类型。</li>
-<li>方法重写时,子类抛出的异常类型要小于或者等于父类抛出的异常类型。  </li>
-</ol>
-</li>
-<li>HttpServletRequest类主要处理：  <ol>
-<li>读取和写入HTTP头标</li>
-<li>取得和设置cookies</li>
-<li>取得路径信息</li>
-<li>标识HTTP会话</li>
-</ol>
-</li>
-<li><a href="http://blog.51cto.com/qing0991/1387200" target="_blank" rel="noopener">关于Java中try-catch-finally-return的执行顺序</a></li>
-<li>运行时数据区包括：程序计数器、虚拟机栈、本地方法栈、Java堆、方法区以及方法区中的运行时常量池:<ol>
-<li>程序计数器： <strong>线程私有</strong>，是当前线程所执行的字节码的行号指示器，如果线程正执行一个java方法，计数器记录正在执行的虚拟机字节码指令的地址，如果线程正在执行的是Native方法，则计数器值为空；</li>
-<li>虚拟机栈： 即栈区， <strong>线程私有</strong> ，为虚拟机执行 Java 方法（字节码）服务，每个方法在执行的时会创建一个栈帧用于存放局部变量表、操作数栈、动态链接和方法出口等信息，每个方法的调用直至执行完成对应于栈帧的入栈和出栈；</li>
-<li>本地方法栈：为虚拟机使用的Native方法服务，也是<strong>线程私有</strong>；</li>
-<li>Java 堆：在虚拟机启动时创建，<strong>线程共享</strong> ，唯一目的是存放对象实例，是垃圾收集器管理的主要区域——” GC 堆“，可以细分为新生代和老年代，新生代又可以细分为 Eden 空间、 From Survivor空间和To Survivor空间；物理上可以不连续，但逻辑上连续，可以选择固定大小或者扩展；</li>
-<li>方法区： <strong>线程共享</strong> ，用于存储被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。被称为“永久代”，是因为 HotSpot 虚拟机的设计团队把 GC 分代收集扩展到方法区，即使用永久代来实现方法区，像 GC 管理 Java 堆一样管理方法区，从而省去专门为方法区编写内存管理代码，内存回收目标是针对常量池的回收和堆类型的卸载；</li>
-<li>运行时常量池：<strong>线程共享</strong> ，是方法区的一部分， C lass 文件中存放编译期生成的各种字面量和符号引用，类加载后进入方法区的运行时常量池中。</li>
-</ol>
-</li>
-<li><a href="https://blog.csdn.net/javazejian/article/details/72772461" target="_blank" rel="noopener">简述java内存模型</a></li>
-<li><p>DispatcherServlet是前端控制器(Front Controller)设计模式的实现主要用作职责调度工作，本身主要用于控制流程<br><img src="http://pbc5upl77.bkt.clouddn.com/springMVCA.png" alt="image"><br>主要职责如下：</p>
-<ol>
-<li>文件上传解析，如果请求类型是multipart将通过MultipartResolver进行文件上传解析；</li>
-<li>通过HandlerMapping，将请求映射到处理器（返回一个HandlerExecutionChain，它包括一个处理器、多个HandlerInterceptor拦截器）；</li>
-<li>通过HandlerAdapter支持多种类型的处理器(HandlerExecutionChain中的处理器)；</li>
-<li>通过ViewResolver解析逻辑视图名到具体视图实现；</li>
-<li>本地化解析；</li>
-<li>渲染具体的视图等；</li>
-<li>如果执行过程中遇到异常将交给HandlerExceptionResolver来解析。</li>
-</ol>
-</li>
-<li><p>当父类，和子类有static时，先初始化父类static，再初始化子类的static，再初始化父类的其他成员变量－&gt;父类构造方法－&gt;子类其他成员变量－&gt;子类的构造方法。<br>父类上层还有父类时，总是先执行最顶层父类的Static－－&gt;派生类static－－&gt;派生类static－－&gt;…－－&gt;子类static－－&gt;顶层父类的其他成员变量－－&gt;父类构造方法－－&gt;派生类的其他成员变量－－&gt;派生类构造方法－－&gt;…－－&gt;子类其他成员变量－－&gt;子类构造方法。<br>同级static块按照出现顺序初始化。</p>
-</li>
-<li>JSP生命周期:<br><img src="http://pbc5upl77.bkt.clouddn.com/jsp_life_cycle.jpg" alt="image"><ol>
-<li>第一次发起请求，将jsp文件转化为servlet源文件,编译。执行jspInit()方法，生命周期内只调用一次。</li>
-<li>调用jspServive()方法</li>
-<li>当容器移除该Servlet、该Servlet发生更改、服务关闭调用jspDestroy()方法。</li>
-</ol>
-</li>
-<li>hashcode和equals的约定关系如下：<ol>
-<li>如果两个对象相等(equals == true)，那么他们一定有相同的哈希值（hash code）。</li>
-<li>如果两个对象的哈希值相等，那么这两个对象有可能相等也有可能不相等。  </li>
-</ol>
-</li>
-</ol>
-<p>作为散列表的key值的对象，若判定为相同，必须有相同的hash code并且equals方法返回true。  </p>
-<ol start="14">
-<li><p>当一个线程被标记成daemon线程，意味着当主线程结束，并且没有其它正在运行的非daemon线程时，该daemon线程也会自动结束。  </p>
-</li>
-<li><ol>
-<li>Only public &amp; abstract are permitted before interface declare.  </li>
-<li>Only public, protected, private, abstract &amp; static are permitted before internal interface declare. </li>
-</ol>
-</li>
-<li><p>数值表示:</p>
-<ol>
-<li>有符号数：是针对二进制来讲的。用最高位作为符号位，“0”代表“+”，“1”代表“-</li>
-<li>计算机中负数是以补码的形式保存的,对于正数，原码与补码相同;对于负数，将补码除符号位之外，按位取反，末位加1得到原码。</li>
-</ol>
-</li>
-<li><a href="https://blog.csdn.net/javazejian/article/details/71333103" target="_blank" rel="noopener">深入理解Java枚举类型(enum)</a></li>
-<li>Java虚拟机中通常使用UTF-16的方式保存一个char类型数值</li>
-<li>实现国际化应用常用的手段是利用ResourceBundle类</li>
-<li>java.sql 部分接口继承关系</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">PreparedStatment--&gt;Statement</span><br><span class="line">CallableStatment--&gt;PreparedStatment</span><br></pre></td></tr></table></figure>
-<p>21.<a href="http://lucaslee.iteye.com/blog/49292" target="_blank" rel="noopener">PreparedStatment与Statment性能对比</a> </p>
-<ol start="22">
-<li>接口中的变量默认是public static final 的，方法默认是public abstract 的。</li>
-<li>java 集合类图 <img src="http://pbc5upl77.bkt.clouddn.com/collection_uml.jpg" alt="image"></li>
-<li>public class ThreadLocal<t>:<ol>
-<li>ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量。</li>
-<li>ThreadLocal中定义了一个哈希表用于为每个线程都提供一个变量的副本。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The entries in this hash map extend WeakReference, using</span></span><br><span class="line"><span class="comment">     * its main ref field as the key (which is always a</span></span><br><span class="line"><span class="comment">     * ThreadLocal object).  Note that null keys (i.e. entry.get()</span></span><br><span class="line"><span class="comment">     * == null) mean that the key is no longer referenced, so the</span></span><br><span class="line"><span class="comment">     * entry can be expunged from table.  Such entries are referred to</span></span><br><span class="line"><span class="comment">     * as "stale entries" in the code that follows.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line"></span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="keyword">super</span>(k);</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</t></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2083,7 +2038,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>

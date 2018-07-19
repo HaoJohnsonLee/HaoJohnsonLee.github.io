@@ -273,6 +273,248 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/java杂记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/04/java杂记/" itemprop="url">java杂记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T19:16:17+08:00">
+                2018-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  1,699
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  6 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>byte -&gt; short-&gt; char -&gt; int -&gt; long -&gt; float -&gt; double</li>
+<li><img src="http://pbc5upl77.bkt.clouddn.com/2527957_1498180954324_D83CBF646B3F43FE947460F6D7231780.png" alt="image"></li>
+<li><img src="http://pbc5upl77.bkt.clouddn.com/7010483_1490969513544_B5CDD8870777EEC7D957D189E573CF3B.png" alt="image"></li>
+<li>方法重载(Overload)的要求:<ol>
+<li>函数名要一致。</li>
+<li>形参列表不一致（形参的个数或形参 的类型不一致）</li>
+<li>与返回值类型无关。</li>
+</ol>
+</li>
+<li>方法重写(Override)要注意的事项：<ol>
+<li>方法重写时,方法名与形参列表必须一致。</li>
+<li>方法重写时,子类的权限修饰符必须要大于或者等于父类的权限修饰符。</li>
+<li>方法重写时,子类的返回值类型必须要小于或者 等于父类的返回值类型。</li>
+<li>方法重写时,子类抛出的异常类型要小于或者等于父类抛出的异常类型。  </li>
+</ol>
+</li>
+<li>HttpServletRequest类主要处理：  <ol>
+<li>读取和写入HTTP头标</li>
+<li>取得和设置cookies</li>
+<li>取得路径信息</li>
+<li>标识HTTP会话</li>
+</ol>
+</li>
+<li><a href="http://blog.51cto.com/qing0991/1387200" target="_blank" rel="noopener">关于Java中try-catch-finally-return的执行顺序</a></li>
+<li>运行时数据区包括：程序计数器、虚拟机栈、本地方法栈、Java堆、方法区以及方法区中的运行时常量池:<ol>
+<li>程序计数器： <strong>线程私有</strong>，是当前线程所执行的字节码的行号指示器，如果线程正执行一个java方法，计数器记录正在执行的虚拟机字节码指令的地址，如果线程正在执行的是Native方法，则计数器值为空；</li>
+<li>虚拟机栈： 即栈区， <strong>线程私有</strong> ，为虚拟机执行 Java 方法（字节码）服务，每个方法在执行的时会创建一个栈帧用于存放局部变量表、操作数栈、动态链接和方法出口等信息，每个方法的调用直至执行完成对应于栈帧的入栈和出栈；</li>
+<li>本地方法栈：为虚拟机使用的Native方法服务，也是<strong>线程私有</strong>；</li>
+<li>Java 堆：在虚拟机启动时创建，<strong>线程共享</strong> ，唯一目的是存放对象实例，是垃圾收集器管理的主要区域——” GC 堆“，可以细分为新生代和老年代，新生代又可以细分为 Eden 空间、 From Survivor空间和To Survivor空间；物理上可以不连续，但逻辑上连续，可以选择固定大小或者扩展；</li>
+<li>方法区： <strong>线程共享</strong> ，用于存储被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。被称为“永久代”，是因为 HotSpot 虚拟机的设计团队把 GC 分代收集扩展到方法区，即使用永久代来实现方法区，像 GC 管理 Java 堆一样管理方法区，从而省去专门为方法区编写内存管理代码，内存回收目标是针对常量池的回收和堆类型的卸载；</li>
+<li>运行时常量池：<strong>线程共享</strong> ，是方法区的一部分， C lass 文件中存放编译期生成的各种字面量和符号引用，类加载后进入方法区的运行时常量池中。</li>
+</ol>
+</li>
+<li><a href="https://blog.csdn.net/javazejian/article/details/72772461" target="_blank" rel="noopener">简述java内存模型</a></li>
+<li><p>DispatcherServlet是前端控制器(Front Controller)设计模式的实现主要用作职责调度工作，本身主要用于控制流程<br><img src="http://pbc5upl77.bkt.clouddn.com/springMVCA.png" alt="image"><br>主要职责如下：</p>
+<ol>
+<li>文件上传解析，如果请求类型是multipart将通过MultipartResolver进行文件上传解析；</li>
+<li>通过HandlerMapping，将请求映射到处理器（返回一个HandlerExecutionChain，它包括一个处理器、多个HandlerInterceptor拦截器）；</li>
+<li>通过HandlerAdapter支持多种类型的处理器(HandlerExecutionChain中的处理器)；</li>
+<li>通过ViewResolver解析逻辑视图名到具体视图实现；</li>
+<li>本地化解析；</li>
+<li>渲染具体的视图等；</li>
+<li>如果执行过程中遇到异常将交给HandlerExceptionResolver来解析。</li>
+</ol>
+</li>
+<li><p>当父类，和子类有static时，先初始化父类static，再初始化子类的static，再初始化父类的其他成员变量－&gt;父类构造方法－&gt;子类其他成员变量－&gt;子类的构造方法。<br>父类上层还有父类时，总是先执行最顶层父类的Static－－&gt;派生类static－－&gt;派生类static－－&gt;…－－&gt;子类static－－&gt;顶层父类的其他成员变量－－&gt;父类构造方法－－&gt;派生类的其他成员变量－－&gt;派生类构造方法－－&gt;…－－&gt;子类其他成员变量－－&gt;子类构造方法。<br>同级static块按照出现顺序初始化。</p>
+</li>
+<li>JSP生命周期:<br><img src="http://pbc5upl77.bkt.clouddn.com/jsp_life_cycle.jpg" alt="image"><ol>
+<li>第一次发起请求，将jsp文件转化为servlet源文件,编译。执行jspInit()方法，生命周期内只调用一次。</li>
+<li>调用jspServive()方法</li>
+<li>当容器移除该Servlet、该Servlet发生更改、服务关闭调用jspDestroy()方法。</li>
+</ol>
+</li>
+<li>hashcode和equals的约定关系如下：<ol>
+<li>如果两个对象相等(equals == true)，那么他们一定有相同的哈希值（hash code）。</li>
+<li>如果两个对象的哈希值相等，那么这两个对象有可能相等也有可能不相等。  </li>
+</ol>
+</li>
+</ol>
+<p>作为散列表的key值的对象，若判定为相同，必须有相同的hash code并且equals方法返回true。  </p>
+<ol start="14">
+<li><p>当一个线程被标记成daemon线程，意味着当主线程结束，并且没有其它正在运行的非daemon线程时，该daemon线程也会自动结束。  </p>
+</li>
+<li><ol>
+<li>Only public &amp; abstract are permitted before interface declare.  </li>
+<li>Only public, protected, private, abstract &amp; static are permitted before internal interface declare. </li>
+</ol>
+</li>
+<li><p>数值表示:</p>
+<ol>
+<li>有符号数：是针对二进制来讲的。用最高位作为符号位，“0”代表“+”，“1”代表“-</li>
+<li>计算机中负数是以补码的形式保存的,对于正数，原码与补码相同;对于负数，将补码除符号位之外，按位取反，末位加1得到原码。</li>
+</ol>
+</li>
+<li><a href="https://blog.csdn.net/javazejian/article/details/71333103" target="_blank" rel="noopener">深入理解Java枚举类型(enum)</a></li>
+<li>Java虚拟机中通常使用UTF-16的方式保存一个char类型数值</li>
+<li>实现国际化应用常用的手段是利用ResourceBundle类</li>
+<li>java.sql 部分接口继承关系</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">PreparedStatment--&gt;Statement</span><br><span class="line">CallableStatment--&gt;PreparedStatment</span><br></pre></td></tr></table></figure>
+<p>21.<a href="http://lucaslee.iteye.com/blog/49292" target="_blank" rel="noopener">PreparedStatment与Statment性能对比</a> </p>
+<ol start="22">
+<li>接口中的变量默认是public static final 的，方法默认是public abstract 的。</li>
+<li>java 集合类图 <img src="http://pbc5upl77.bkt.clouddn.com/collection_uml.jpg" alt="image"></li>
+<li>public class ThreadLocal<t>:<ol>
+<li>ThreadLocal类为每一个线程都维护了自己独有的变量拷贝。每个线程都拥有了自己独立的一个变量。</li>
+<li>ThreadLocal中定义了一个哈希表用于为每个线程都提供一个变量的副本。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The entries in this hash map extend WeakReference, using</span></span><br><span class="line"><span class="comment">     * its main ref field as the key (which is always a</span></span><br><span class="line"><span class="comment">     * ThreadLocal object).  Note that null keys (i.e. entry.get()</span></span><br><span class="line"><span class="comment">     * == null) mean that the key is no longer referenced, so the</span></span><br><span class="line"><span class="comment">     * entry can be expunged from table.  Such entries are referred to</span></span><br><span class="line"><span class="comment">     * as "stale entries" in the code that follows.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line"></span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="keyword">super</span>(k);</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</t></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/推荐列表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1745,169 +1987,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/05/30/算法-向量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnson Lee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="昊江的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/30/算法-向量/" itemprop="url">算法-向量-1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-30T16:39:23+08:00">
-                2018-05-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article</span>
-                
-                <span title="Words count in article">
-                  1,168
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time</span>
-                
-                <span title="Reading time">
-                  6 mins
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h4><p>本次实现一个简单的向量结构，拥有遍历，插入，查找，删除接口。</p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><h5 id="Vector-h"><a href="#Vector-h" class="headerlink" title="Vector.h"></a>Vector.h</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> Rank;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFAULT_CAPACITY 10 <span class="comment">// 初始向量容量</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span> <span class="comment">//这是一个visit对象实例</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp; e)</span> </span>&#123; e++; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Rank _size;</span><br><span class="line">	T* _items;</span><br><span class="line">	<span class="keyword">int</span> _capacity;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">expand</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">shrink</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Vector(<span class="keyword">int</span> c = DEFAULT_CAPACITY);</span><br><span class="line">	Vector(T* items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi);</span><br><span class="line">	<span class="keyword">virtual</span> ~Vector();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//只读接口</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//判断是否为空</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//插入操作</span></span><br><span class="line">	<span class="function">Rank <span class="title">insert</span><span class="params">(Rank r, <span class="keyword">const</span> T&amp; e)</span></span>;</span><br><span class="line">	<span class="comment">//删除 位于lo 与 hi区间的元素 返回删除个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(Rank lo, Rank hi)</span></span>;</span><br><span class="line">	<span class="comment">//删除 位于r 的元素 返回删除个数</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(Rank r)</span></span>;</span><br><span class="line">	<span class="comment">//区间内查找</span></span><br><span class="line">	<span class="function">Rank <span class="title">find</span><span class="params">(<span class="keyword">const</span> T&amp; e, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span>;</span><br><span class="line">	<span class="comment">//剔除所有重复元素 O(n^2)</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">deduplicate</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//遍历元素</span></span><br><span class="line">	void traverse(void(*visit)(T&amp; e));</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt;  <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST&amp; vst)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//可写接口</span></span><br><span class="line">	T &amp; <span class="keyword">operator</span>[] (Rank rank) <span class="keyword">const</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h5 id="Vector-cpp"><a href="#Vector-cpp" class="headerlink" title="Vector.cpp"></a>Vector.cpp</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Vector.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::Vector(<span class="keyword">int</span> c)</span><br><span class="line">&#123;</span><br><span class="line">	_items = <span class="keyword">new</span> T[_capacity = c];</span><br><span class="line">	_size = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::Vector(T * items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	copyFrom(items, lo, hi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Vector&lt;T&gt;::~Vector()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">delete</span>[] _items;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::size() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> _size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">bool</span> Vector&lt;T&gt;::empty() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> !_size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::insert(Rank r, <span class="keyword">const</span> T&amp; e)</span><br><span class="line">&#123;</span><br><span class="line">	expand();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = _size; i &gt; r; i--) </span><br><span class="line">		_items[i] = _items[i - <span class="number">1</span>];</span><br><span class="line">	_items[r] = e; _size++;</span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::remove(Rank lo, Rank hi)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (hi &lt; _size) _items[lo++] = _items[hi++];</span><br><span class="line">	<span class="keyword">int</span> decrease = hi - lo;</span><br><span class="line">	_size = _size - decrease;</span><br><span class="line">	shrink();  <span class="comment">//非必须</span></span><br><span class="line">	<span class="keyword">return</span> decrease;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::remove(Rank r)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> remove(r, r + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::find(<span class="keyword">const</span> T &amp; e, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span> (lo &lt; hi-- &amp;&amp; e != _items[hi]);</span><br><span class="line">	<span class="keyword">return</span> hi;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::deduplicate()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> oldSize = _size;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (i &lt; _size) &#123;</span><br><span class="line">		find(_items[i], <span class="number">0</span>, i) &lt; <span class="number">0</span> ? i++ : remove(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> oldSize - _size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(<span class="keyword">void</span>(*visit)(T &amp;e))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_items[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> VST&gt;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST &amp; visit) <span class="comment">//VST 对象进行 "()"操作符重载，执行自定义复杂操作</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_items[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T &amp; Vector&lt;T&gt;::<span class="keyword">operator</span>[](Rank rank) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	assert(<span class="number">0</span> &lt;= rank &amp;&amp; rank &lt; _size);</span><br><span class="line">	<span class="keyword">return</span> _items[rank];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::copyFrom(T * items, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span><br><span class="line">&#123;</span><br><span class="line">	assert(lo &lt; hi);</span><br><span class="line">	_items = <span class="keyword">new</span> T[_capacity = (hi - lo) &lt;&lt; <span class="number">1</span>];</span><br><span class="line">	_size = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (lo&lt;hi)</span><br><span class="line">		_items[_size++] = items[lo++];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每次插入前调用该函数</span></span><br><span class="line"><span class="comment"> * 确保不上溢</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::expand()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (_size &lt; _capacity) <span class="keyword">return</span>;  <span class="comment">//不必扩容</span></span><br><span class="line">	<span class="keyword">if</span> (_capacity &lt; DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;   <span class="comment">//至少将最大容量扩展至默认值</span></span><br><span class="line">	<span class="comment">//开辟新数组并复制数组</span></span><br><span class="line">	T* oldElem = _items; _items = <span class="keyword">new</span> T[_capacity &lt;&lt; <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">		_items[i] = oldElem[i];</span><br><span class="line">	<span class="keyword">delete</span>[] oldElem;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 每次删除前调用该函数</span></span><br><span class="line"><span class="comment">* 确保不下溢</span></span><br><span class="line"><span class="comment">* 保证一定的空间利用率</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::shrink()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (_capacity &lt; DEFAULT_CAPACITY &lt;&lt; <span class="number">1</span>) <span class="keyword">return</span>; <span class="comment">//不至于最后大小小于默认值</span></span><br><span class="line">	<span class="keyword">if</span> (_size &lt;&lt; <span class="number">2</span> &gt; _capacity)  <span class="keyword">return</span>;</span><br><span class="line">	<span class="comment">// 当元素数量4倍小于最大容量时扩容</span></span><br><span class="line">	T* oldElem = _items; _items = <span class="keyword">new</span> T[_capacity &gt;&gt; <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">		_items[i] = oldElem[i];</span><br><span class="line">	<span class="keyword">delete</span>[] oldElem;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h4><p>Is it possible to replace:<br>是否可以向量扩容代码中的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) _elem[i] = oldElem[i];</span><br></pre></td></tr></table></figure></p>
-<p>in the vector expansion code with:<br>替代为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">memcpy</span>(_elem, oldElem, _size * <span class="keyword">sizeof</span>(T));</span><br></pre></td></tr></table></figure></p>
-<p>P.S.This question involves the relevant knowledge of C++<br>P.S.本题涉及C++的相关知识</p>
-<p>Yes, they are equivalent and there will be no problem.<br>是，二者是等价的，不会有任何问题。 No, because the range of elemental intervals for the two copies is different.<br>否，因为二者复制的元素区间范围不同。 No, because the range of elemental intervals for the two copies is different.<br>否，因为二者复制的元素区间范围不同。 - 不正确<br>No, because their efficiency are different.<br>否，因为二者的效率不同。<br>No, because whether the latter can achieve the purpose is related to element type T.<br>否，因为后者能否达到目的与元素类型T有关。</p>
-<h4 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h4><p>否，因为后者能否达到目的与元素类型T有关。<br>函数 ~memcpy~ 当~T~不是基本数据类型，并且没有自定义的拷贝函数时，只能执行浅拷贝，当释放原有数组空间时，会使得内容指针成为野指针。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1953,7 +2037,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
