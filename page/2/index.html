@@ -336,7 +336,7 @@
                   <span class="post-meta-item-text">Words count in article</span>
                 
                 <span title="Words count in article">
-                  1,699
+                  1,706
                 </span>
               
 
@@ -352,7 +352,7 @@
                   <span class="post-meta-item-text">Reading time</span>
                 
                 <span title="Reading time">
-                  6 mins
+                  7 mins
                 </span>
               
             </div>
@@ -406,7 +406,7 @@
 <li>本地方法栈：为虚拟机使用的Native方法服务，也是<strong>线程私有</strong>；</li>
 <li>Java 堆：在虚拟机启动时创建，<strong>线程共享</strong> ，唯一目的是存放对象实例，是垃圾收集器管理的主要区域——” GC 堆“，可以细分为新生代和老年代，新生代又可以细分为 Eden 空间、 From Survivor空间和To Survivor空间；物理上可以不连续，但逻辑上连续，可以选择固定大小或者扩展；</li>
 <li>方法区： <strong>线程共享</strong> ，用于存储被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。被称为“永久代”，是因为 HotSpot 虚拟机的设计团队把 GC 分代收集扩展到方法区，即使用永久代来实现方法区，像 GC 管理 Java 堆一样管理方法区，从而省去专门为方法区编写内存管理代码，内存回收目标是针对常量池的回收和堆类型的卸载；</li>
-<li>运行时常量池：<strong>线程共享</strong> ，是方法区的一部分， C lass 文件中存放编译期生成的各种字面量和符号引用，类加载后进入方法区的运行时常量池中。</li>
+<li>运行时常量池：<strong>线程共享</strong> ，是方法区的一部分， C lass 文件中存放编译期生成的各种字面量和符号引用，类加载后进入方法区的运行时常量池中。<br>模型如下图所示:<br><img src="http://pbc5upl77.bkt.clouddn.com/jmm.png" alt="image"></li>
 </ol>
 </li>
 <li><a href="https://blog.csdn.net/javazejian/article/details/72772461" target="_blank" rel="noopener">简述java内存模型</a></li>
