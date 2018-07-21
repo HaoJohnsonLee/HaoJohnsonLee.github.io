@@ -283,6 +283,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/05/二叉树重建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/05/二叉树重建/" itemprop="url">二叉树重建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T11:27:49+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  129
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  1 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="TreeNode-结构"><a href="#TreeNode-结构" class="headerlink" title="TreeNode 结构"></a>TreeNode 结构</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    TreeNode left;</span><br><span class="line">    TreeNode right;</span><br><span class="line">    TreeNode(<span class="keyword">int</span> x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="前序-中序"><a href="#前序-中序" class="headerlink" title="前序 + 中序"></a>前序 + 中序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">reConstructBinaryTree</span><span class="params">(<span class="keyword">int</span> [] pre,<span class="keyword">int</span> [] in)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> reConstructBinaryTree(pre,<span class="number">0</span>,pre.length-<span class="number">1</span>,in,<span class="number">0</span>,in.length-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> TreeNode <span class="title">reConstructBinaryTree</span><span class="params">(<span class="keyword">int</span> [] pre,<span class="keyword">int</span> startPre,<span class="keyword">int</span> endPre,<span class="keyword">int</span> [] in,<span class="keyword">int</span> startIn,<span class="keyword">int</span> endIn)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(startPre &gt; endPre || startIn &gt; endIn) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        TreeNode root = <span class="keyword">new</span> TreeNode(pre[startPre]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = startIn; i&lt;= endIn ; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(in[i] == pre[startPre])&#123;</span><br><span class="line">                root.left=reConstructBinaryTree(pre,startPre+<span class="number">1</span>,startPre+i-startIn,in,startIn,i-<span class="number">1</span>);</span><br><span class="line">                root.right=reConstructBinaryTree(pre,i-startIn+startPre+<span class="number">1</span>,endPre,in,i+<span class="number">1</span>,endIn);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1862,159 +2014,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/06/03/算法-二叉树/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnson Lee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="昊江的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/03/算法-二叉树/" itemprop="url">算法-二叉树.1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-03T12:17:18+08:00">
-                2018-06-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article</span>
-                
-                <span title="Words count in article">
-                  523
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time</span>
-                
-                <span title="Reading time">
-                  2 mins
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>树结构存在是为了平衡CRUD操作效率的一种半线性结构的数据结构(与图、向量相比)。而二叉树是树的一种特例，有趣的是，在一般条件下，可证明二叉树可等效代替所有的树结构，所以树结构用二叉树实现来代替。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>树结构同样由一个个的节点构成，节点保存三个父子指针连接。</p>
-<h4 id="BinaryTree-h"><a href="#BinaryTree-h" class="headerlink" title="BinaryTree.h"></a>BinaryTree.h</h4><p>定义了二叉树节点的结构以及基本操作<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BinNodePosi(T) BinNode<span class="meta-string">&lt;T&gt;* //节点位置</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> stature(p) ((p) ? (p)-&gt;height : -1) <span class="comment">//节点高度（与“空树高度为-1”的约定相统一）</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123; RB_RED, RB_BLACK&#125; RBColor; <span class="comment">//节点颜色</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">struct</span> <span class="title">BinNode</span> &#123;</span> <span class="comment">//二叉树节点模板类</span></span><br><span class="line"><span class="comment">// 成员</span></span><br><span class="line">   T data; <span class="comment">//数值</span></span><br><span class="line">   BinNodePosi(T) parent; BinNodePosi(T) lc; BinNodePosi(T) rc; <span class="comment">//父节点及左、右孩子</span></span><br><span class="line">   <span class="keyword">int</span> height; <span class="comment">//高度（通用）</span></span><br><span class="line">   <span class="keyword">int</span> npl; <span class="comment">//Null Path Length（左式堆，也可直接用height代替）</span></span><br><span class="line">   RBColor color; <span class="comment">//颜色（红黑树）</span></span><br><span class="line"><span class="comment">// 构造函数</span></span><br><span class="line">   BinNode() :</span><br><span class="line">      parent ( <span class="literal">NULL</span> ), lc ( <span class="literal">NULL</span> ), rc ( <span class="literal">NULL</span> ), height ( <span class="number">0</span> ), npl ( <span class="number">1</span> ), color ( RB_RED ) &#123; &#125;</span><br><span class="line">   BinNode ( T e, BinNodePosi(T) p = <span class="literal">NULL</span>, BinNodePosi(T) lc = <span class="literal">NULL</span>, BinNodePosi(T) rc = <span class="literal">NULL</span>,</span><br><span class="line">             <span class="keyword">int</span> h = <span class="number">0</span>, <span class="keyword">int</span> l = <span class="number">1</span>, RBColor c = RB_RED ) :</span><br><span class="line">      data ( e ), parent ( p ), lc ( lc ), rc ( rc ), height ( h ), npl ( l ), color ( c ) &#123; &#125;</span><br><span class="line"><span class="comment">// 操作接口</span></span><br><span class="line">   <span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>; <span class="comment">//统计当前节点后代总数，亦即以其为根的子树的规模</span></span><br><span class="line">   BinNodePosi(T) insertAsLC ( T <span class="keyword">const</span>&amp; ); <span class="comment">//作为当前节点的左孩子插入新节点</span></span><br><span class="line">   BinNodePosi(T) insertAsRC ( T <span class="keyword">const</span>&amp; ); <span class="comment">//作为当前节点的右孩子插入新节点</span></span><br><span class="line">   BinNodePosi(T) succ(); <span class="comment">//取当前节点的直接后继</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">travLevel</span> <span class="params">( VST&amp; )</span></span>; <span class="comment">//子树层次遍历</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">travPre</span> <span class="params">( VST&amp; )</span></span>; <span class="comment">//子树先序遍历</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">travIn</span> <span class="params">( VST&amp; )</span></span>; <span class="comment">//子树中序遍历</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">travPost</span> <span class="params">( VST&amp; )</span></span>; <span class="comment">//子树后序遍历</span></span><br><span class="line"><span class="comment">// 比较器、判等器</span></span><br><span class="line">   <span class="keyword">bool</span> <span class="keyword">operator</span>&lt; ( BinNode <span class="keyword">const</span>&amp; bn ) &#123; <span class="keyword">return</span> data &lt; bn.data; &#125; <span class="comment">//小于</span></span><br><span class="line">   <span class="keyword">bool</span> <span class="keyword">operator</span>== ( BinNode <span class="keyword">const</span>&amp; bn ) &#123; <span class="keyword">return</span> data == bn.data; &#125; <span class="comment">//等于</span></span><br><span class="line">   <span class="keyword">bool</span> <span class="keyword">operator</span>&gt; (BinNode <span class="keyword">const</span>&amp; bn)&#123; <span class="keyword">return</span> data &gt; bn.data;&#125; <span class="comment">//大于 </span></span><br><span class="line">   <span class="comment">/*DSA*/</span></span><br><span class="line">   <span class="comment">/*DSA*/</span>BinNodePosi(T) zig(); <span class="comment">//顺时针旋转</span></span><br><span class="line">   <span class="comment">/*DSA*/</span>BinNodePosi(T) zag(); <span class="comment">//逆时针旋转</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2065,7 +2064,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -2078,7 +2077,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">tags</span>
               
             </div>
