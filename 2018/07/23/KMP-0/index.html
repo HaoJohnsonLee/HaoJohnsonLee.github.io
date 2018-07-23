@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference vr = new ValueAndReference();        int i = 0;        vr.in">
-<meta name="keywords" content="Java">
+<meta name="description" content="Implementation1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980public class KMP &amp;#123;    /**">
+<meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java函数参数传递&amp;自增的坑">
-<meta property="og:url" content="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/index.html">
+<meta property="og:title" content="KMP-0">
+<meta property="og:url" content="https://haojohnsonlee.github.io/2018/07/23/KMP-0/index.html">
 <meta property="og:site_name" content="昊江的博客">
-<meta property="og:description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference vr = new ValueAndReference();        int i = 0;        vr.in">
+<meta property="og:description" content="Implementation1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980public class KMP &amp;#123;    /**">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-07-04T16:49:38.332Z">
+<meta property="og:updated_time" content="2018-07-23T12:21:17.003Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java函数参数传递&amp;自增的坑">
-<meta name="twitter:description" content="引子有一段这样的代码:12345678910111213public class ValueAndReference &amp;#123;    public static void main(String[] args) &amp;#123;        ValueAndReference vr = new ValueAndReference();        int i = 0;        vr.in">
+<meta name="twitter:title" content="KMP-0">
+<meta name="twitter:description" content="Implementation1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980public class KMP &amp;#123;    /**">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/"/>
+  <link rel="canonical" href="https://haojohnsonlee.github.io/2018/07/23/KMP-0/"/>
 
 
 
 
 
-  <title>java函数参数传递&自增的坑 | 昊江的博客</title>
+  <title>KMP-0 | 昊江的博客</title>
   
 
 
@@ -282,7 +282,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/23/KMP-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnson Lee">
@@ -299,7 +299,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">java函数参数传递&自增的坑</h1>
+          <h1 class="post-title" itemprop="name headline">KMP-0</h1>
         
 
         <div class="post-meta">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-04T23:35:12+08:00">
-                2018-07-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-23T20:20:09+08:00">
+                2018-07-23
               </time>
             
 
@@ -343,7 +343,7 @@
                   <span class="post-meta-item-text">Words count in article</span>
                 
                 <span title="Words count in article">
-                  812
+                  342
                 </span>
               
 
@@ -359,7 +359,7 @@
                   <span class="post-meta-item-text">Reading time</span>
                 
                 <span title="Reading time">
-                  3 mins
+                  2 mins
                 </span>
               
             </div>
@@ -380,27 +380,7 @@
       
 
       
-        <h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>有一段这样的代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ValueAndReference</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ValueAndReference vr = <span class="keyword">new</span> ValueAndReference();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        vr.increase(i);</span><br><span class="line">        i= i ++;</span><br><span class="line">        System.out.println(i);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">increase</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>刚开始以为输出是”1”,以为只有值传递的坑，发现自增的坑最终坑了。<br>最后输出是 <strong>0</strong>，两次”<strong>++</strong>“操作都没能改变 <strong>i</strong> 的值。 </p>
-<h2 id="值传递"><a href="#值传递" class="headerlink" title="值传递"></a>值传递</h2><p>起初，以为在java中，与其他语言(如C++)有相同参数传递机制，值传递与引用传递，而且一直这样实践着，后来发现在java中<strong>所有的参数传递都是值传递</strong>，在《java核心技术卷一(原书第九版)》中提到</p>
-<blockquote>
-<p>java程序设计语言对对象采用的不是引用调用，实际上，对象引用进行的是值传递。  </p>
-</blockquote>
-<p>这就决定了以下几点:  </p>
-<ul>
-<li>1.函数参数接收的永远是真正传入对象的拷贝。<br>2.函数内部无法改变真正对象的值。具体来说，基本数据类型值无法改变(如上例中的 i )，非基本类型无法改变其所指向的对象，也就是无法让其指向新对象，但是可以改变对象内部的状态。</li>
-</ul>
-<p>也就是说，在java中，不存在引用传递这一说。</p>
-<h2 id="i-i-发生了什么？"><a href="#i-i-发生了什么？" class="headerlink" title="i = i++ 发生了什么？"></a>i = i++ 发生了什么？</h2><p>从下面这个小例子出发:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        i = i++;</span><br><span class="line">        System.out.print(i);    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>同样的，该例子输出为 <strong>0</strong>  。<br>经编译器编译后使用javap工具得到编译后的结果如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">  public Test();</span><br><span class="line">    Code:</span><br><span class="line">       0: aload_0</span><br><span class="line">       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">       4: return</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    Code:</span><br><span class="line">       0: iconst_0</span><br><span class="line">       1: istore_1</span><br><span class="line">       2: iload_1</span><br><span class="line">       3: iinc          1, 1</span><br><span class="line">       6: istore_1</span><br><span class="line">       7: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">      10: iload_1</span><br><span class="line">      11: invokevirtual #3                  // Method java/io/PrintStream.print:(I)V</span><br><span class="line">      14: return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>关注于main方法对 <strong>i</strong> 变量的处理过程。<br>0、 将 int 类型 <strong>0</strong> 入栈<br>1、 弹出栈顶元素，将值存入1st个局部变量中，即 <strong>i</strong><br>2、 从<strong>i</strong>中取出数值入栈    </p>
-<blockquote>
-<p>int i = 0;  </p>
-</blockquote>
-<p>3-5、 局部变量自增,此时 <strong>i</strong> 的值为 <strong>1</strong><br>6、 弹出栈顶元素，将值存入1st个局部变量中，此时 <strong>i</strong> 的值回到开始栈顶元素大小 <strong>0</strong><br>之后的代码就是输出格式了。<br>从上面的代码可以看出，<strong>i++</strong> 的值实际上不是赋给 <strong>i</strong>本身，而是另外的局部变量，最终 <strong>i</strong> 的值还是最初入栈的那个值。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>根据这些，可以知道，java在函数传递的安全性上做了足够的工作，你无法真正改变传入的参数，也就不会出现混乱的引用情况了。<br>在局部变量赋值的过程中，总是从栈中弹出值赋给局部变量，<strong>i++</strong> 的操作，只改变了局部变量的值，而为改变栈中元素的值，所以 <strong>i = i++ ;</strong> 的操作无法改变 <strong>i</strong> 的值，也就可以理解 <strong>i++;</strong> 不做赋值操作可以改变 <strong>i</strong> 的值了。</p>
-<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a href="http://pbc5upl77.bkt.clouddn.com/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%20%E5%8D%B7%E2%85%A0%28%E5%8E%9F%E4%B9%A6%E7%AC%AC9%E7%89%88%29.pdf" target="_blank" rel="noopener">Java核心技术 卷Ⅰ(原书第9版)  </a><br><a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html" target="_blank" rel="noopener">Java Virtual Machine Specification-The class File Format</a>  </p>
-
+        <h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KMP</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> origin  原始串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pattern 模式串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 匹配到的原始串的首索引 or -1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">match</span><span class="params">(String origin, String pattern)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (origin.length() &lt; pattern.length()) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span>[] next = next(pattern);</span><br><span class="line">        movePrefixTable(next);</span><br><span class="line">        <span class="comment">// i  -&gt;&gt;  origin</span></span><br><span class="line">        <span class="comment">// j  -&gt;&gt; pattern</span></span><br><span class="line">        <span class="keyword">int</span> M = origin.length();</span><br><span class="line">        <span class="keyword">int</span> N = pattern.length();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; M) &#123;</span><br><span class="line">            <span class="keyword">if</span> (j == N) &#123;</span><br><span class="line">                <span class="keyword">return</span> i - j;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (origin.charAt(i) == pattern.charAt(j)) &#123;</span><br><span class="line">                i++;</span><br><span class="line">                j++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">                <span class="keyword">if</span> (j == -<span class="number">1</span>) &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                    i++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 找到公共前后缀表</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> pattern a   b   a   b   c</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 0   0   1   2   0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] next(String pattern) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] next = <span class="keyword">new</span> <span class="keyword">int</span>[pattern.length()];</span><br><span class="line">        next[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> last = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; pattern.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (pattern.charAt(i) == pattern.charAt(last + <span class="number">1</span>)) &#123;</span><br><span class="line">                next[i] = next[i - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                last++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pattern.charAt(<span class="number">0</span>) == pattern.charAt(i)) &#123;</span><br><span class="line">                next[i] = <span class="number">1</span>;</span><br><span class="line">                last = <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                next[i] = <span class="number">0</span>;</span><br><span class="line">                last = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向后移位 首位置为 -1</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> next a   b   a   b   c</span></span><br><span class="line"><span class="comment">     *             0   0   1   2   0</span></span><br><span class="line"><span class="comment">     *             ---&gt; -1   0   0   1   2</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">movePrefixTable</span><span class="params">(<span class="keyword">int</span>[] next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = next.length - <span class="number">1</span>; i &gt; <span class="number">0</span>; ) &#123;</span><br><span class="line">            next[i] = next[--i];</span><br><span class="line">        &#125;</span><br><span class="line">        next[<span class="number">0</span>] = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String origin = <span class="string">"abababcabaade"</span>;</span><br><span class="line">        String pattern = <span class="string">"ababcabaa"</span>;</span><br><span class="line">        <span class="keyword">int</span> result = <span class="keyword">new</span> KMP().match(origin, pattern);</span><br><span class="line">        <span class="keyword">if</span> (result == -<span class="number">1</span>) System.out.printf(<span class="string">"Can't found pattern : %s"</span>, pattern);</span><br><span class="line">        <span class="keyword">else</span> System.out.printf(<span class="string">"Found patter at %d"</span>, result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -420,7 +400,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/" title="java函数参数传递&自增的坑">https://haojohnsonlee.github.io/2018/07/04/java函数参数传递&自增的坑/</a>
+    <a href="https://haojohnsonlee.github.io/2018/07/23/KMP-0/" title="KMP-0">https://haojohnsonlee.github.io/2018/07/23/KMP-0/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -435,7 +415,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -448,8 +428,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/04/java杂记/" rel="next" title="java杂记">
-                <i class="fa fa-chevron-left"></i> java杂记
+              <a href="/2018/07/22/ThreadPoolExecutor/" rel="next" title="ThreadPoolExecutor">
+                <i class="fa fa-chevron-left"></i> ThreadPoolExecutor
               </a>
             
           </div>
@@ -457,10 +437,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/05/二叉树重建/" rel="prev" title="二叉树重建">
-                二叉树重建 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -587,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值传递"><span class="nav-number">2.</span> <span class="nav-text">值传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#i-i-发生了什么？"><span class="nav-number">3.</span> <span class="nav-text">i = i++ 发生了什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reference"><span class="nav-number">4.1.</span> <span class="nav-text">reference</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Implementation"><span class="nav-number">1.</span> <span class="nav-text">Implementation</span></a></li></ol></div>
             
 
           </div>
