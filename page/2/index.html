@@ -283,6 +283,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/11/Trie-Tree-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnson Lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="昊江的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/11/Trie-Tree-0/" itemprop="url">Trie Tree-0</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T20:53:54+08:00">
+                2018-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article</span>
+                
+                <span title="Words count in article">
+                  488
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time</span>
+                
+                <span title="Reading time">
+                  2 mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>Ignatius最近遇到一个难题,老师交给他很多单词(只有小写字母组成,不会有重复的单词出现),现在老师要他统计出以某个字符串为前缀的单词数量(单词本身也是自己的前缀).</p>
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h2><p>输入数据的第一部分是一张单词表,每行一个单词,单词的长度不超过10,它们代表的是老师交给Ignatius统计的单词,一个空行代表单词表的结束.第二部分是一连串的提问,每行一个提问,每个提问都是一个字符串.</p>
+<h3 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input"></a>Sample Input</h3><blockquote>
+<p>banana<br>band<br>bee<br>absolute<br>acm</p>
+</blockquote>
+<blockquote>
+<p>ba<br>b<br>band<br>abc</p>
+</blockquote>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>对于每个提问,给出以该字符串为前缀的单词的数量.</p>
+<h3 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output"></a>Sample Output</h3><blockquote>
+<p>2<br>3<br>1<br>0</p>
+</blockquote>
+<h2 id="TrieTree-to-solve"><a href="#TrieTree-to-solve" class="headerlink" title="TrieTree to solve"></a>TrieTree to solve</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> per.johnson.dsa.ds;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Johnson on 2018/7/11.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrieTree</span> </span>&#123;</span><br><span class="line">    TrieTreeNode root;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TrieTree</span><span class="params">()</span></span>&#123;</span><br><span class="line">        root = <span class="keyword">new</span> TrieTreeNode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(String src)</span></span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] array = src.toCharArray();</span><br><span class="line">        TrieTreeNode cur;</span><br><span class="line">        TrieTreeNode temp = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;array.length; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> index = array[i] - <span class="string">'a'</span>;</span><br><span class="line">            cur = temp.next[index];</span><br><span class="line">            <span class="keyword">if</span>(cur == <span class="keyword">null</span>)&#123;</span><br><span class="line">                temp.next[index] = <span class="keyword">new</span> TrieTreeNode();</span><br><span class="line">                cur = temp.next[index];</span><br><span class="line">                cur.isWord = (i == array.length - <span class="number">1</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                cur.count++;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = cur;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trieNum</span><span class="params">(String sample)</span></span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] chars = sample.toCharArray();</span><br><span class="line">        TrieTreeNode end = <span class="keyword">null</span> ;</span><br><span class="line">        TrieTreeNode temp =root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; chars.length; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> index = chars[i] - <span class="string">'a'</span>;</span><br><span class="line">            temp = temp.next[index];</span><br><span class="line">            end = temp;</span><br><span class="line">            <span class="keyword">if</span>(temp == <span class="keyword">null</span>) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> end == <span class="keyword">null</span> ? <span class="number">0</span> : end.count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TrieTree tree = <span class="keyword">new</span> TrieTree();</span><br><span class="line">        tree.insert(<span class="string">"banana"</span>);</span><br><span class="line">        tree.insert(<span class="string">"band"</span>);</span><br><span class="line">        tree.insert(<span class="string">"bee"</span>);</span><br><span class="line">        tree.insert(<span class="string">"absolute"</span>);</span><br><span class="line">        tree.insert(<span class="string">"acm"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(tree.trieNum(<span class="string">"ba"</span>));</span><br><span class="line">        System.out.println(tree.trieNum(<span class="string">"b"</span>));</span><br><span class="line">        System.out.println(tree.trieNum(<span class="string">"band"</span>));</span><br><span class="line">        System.out.println(tree.trieNum(<span class="string">"abc"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrieTreeNode</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count; <span class="comment">//以该单词为前缀的单词数目，自己为自己前缀</span></span><br><span class="line">    TrieTreeNode[] next;  <span class="comment">// 子节点</span></span><br><span class="line">    <span class="keyword">boolean</span> isWord; <span class="comment">//是否以此为结束的一个单词</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TrieTreeNode</span><span class="params">()</span></span>&#123;</span><br><span class="line">        count = <span class="number">1</span>;</span><br><span class="line">        isWord = <span class="keyword">false</span>;</span><br><span class="line">        next = <span class="keyword">new</span> TrieTreeNode[<span class="number">26</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/07/11/计算机网络-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1782,169 +1945,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haojohnsonlee.github.io/2018/06/27/自由/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnson Lee">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="昊江的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/27/自由/" itemprop="url">自由</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-27T21:46:10+08:00">
-                2018-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article</span>
-                
-                <span title="Words count in article">
-                  1,556
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time</span>
-                
-                <span title="Reading time">
-                  5 mins
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="先人的自由观"><a href="#先人的自由观" class="headerlink" title="先人的自由观"></a>先人的自由观</h4><p>庄子说“无己”、道法自然，泯灭自身，融入自然，顺应自然。着眼于自身的修养，物化个体，消灭个体作为生命的思考，这时人与人便都成了道中的一体。在他的眼里，蝴蝶同人是一样的，是在自然框架之下的物，谁是蝴蝶亦不可知。所谓的自由，在他表述下为“真人”，如他所说: </p>
-<blockquote>
-<p>古之真人，不知说生，不知恶死;其出不訢，其入不距;翛然而往，翛然而来而已矣。不忘其所始，不求其所终;受而喜之，忘而复之。是之谓不以心捐道，不以人助天。是之谓真人。</p>
-</blockquote>
-<p>“不以人助天”，郭象解释为“真人知用，心则背道，助天则伤生，故不为也”。顺应自然，无为，无所待即是他的自由。他批判了文明的虚伪性，怀疑、猜忌、虚荣、仇恨、背叛等等人的劣根性在文明的裹挟下短暂“消失”，但并没有消除人心中的焦虑不安。自然状态下的人，没有过多的欲望与思考，也就失去了焦虑的源头。舜曾以天下让善卷，善卷自得于逍遥天地之间，日出而作，日落而息，拒绝了舜的禅让。这样的状态便是庄子眼中的自由，保持自然的状态，他在精神上是无比安宁的。  </p>
-<p>邓晓芒在《康德自由概念的三个层次》中将康德的自由观划分为“先验的自由” 、“ 实践的自由”和“ 自由感” 三个层次。</p>
-<ol>
-<li>在机械因果律中永远需要追溯更早的原因，每个事件的发生必然需要去追溯更早的事件。但这无法解释这个世界的的现实存在的理由，是什么让这个世界产生？世界的源头又是什么?由此，必须假定一个自发的，它本身的发生并不取决于其他任何元素，这种意义上来说，此事件是自由的。这样不妨假定世界上存在各种时间序列上自发发生的，它们有着自由行动的能力，不取决于任何事物。它提供了一个可归咎性的依据，并不违反因果律，仅仅是为其提供了因果过程的开端。此种自由的内涵一方面在于人们摆脱感性认识，以及一切因果律的约束的消极的自由；;另一方面它意味着自行开始一个因果系列的原因性, 这是积极意义上的自由。这两方面的内容实际上也正是一般实践的自由的内容,所以康德说:“值得特别注意的是,以这个自由的先验理念为根据的是自由的实践概念”。</li>
-<li>实践的自由本身也分为两个层次,即“自由的任意”和“自由意志”。<br>在我看来自由的任意是感性的，也是朴素的自由，与庄子“无己”不一致的是其强调人的主观性。之所以说它是朴素的自由，是因为它在人性的基础上，突出了人的感性认识对其行动的决定力，其是无法预计的。当人能够独立于感性认识去规定自己，也就达到了自由的任意，此时其已然具有理性的实践的影子。<br>意志与任意并非两个独立的概念，它们都属于人的欲求领域。自由的任意并没有摆脱感性的个人经验主义，虽然已然发展出了理性的观念，但其并没有完全摆脱感性认识，此时的理性是为了某个欲求或利益服务，并不是真正自由的。自由意志是极为理性的，只有完全摆脱了感性的裹挟，使理性本身具有了超越一切感性欲求之上的尊严，才能获得一贯的自由。</li>
-<li>康德认为,自由作为人的本体不可能是感性的,而在反思判断力中所出现的情感领域中的“自由”正因为是由“反思”带出来的。我们在感受自由的过程中反思自己的自由主体，从而唤起进一步对自由追寻的热忱，是人理性反思的正反馈过程。看起来这是人的感性认识，但其确是人在感受自己内心的道德价值进行的理性思考做出的动物性表现，建立在先验的自由和实践的自由之上的外在表现。  </li>
-</ol>
-<p>谈到胡适对于自由的追寻耐人寻味。胡适先生在<a href="http://pbc5upl77.bkt.clouddn.com/%E5%AE%B9%E5%BF%8D%E4%B8%8E%E8%87%AA%E7%94%B1_%E8%83%A1%E9%80%82.pdf" target="_blank" rel="noopener">容忍与自由</a>中提到，真正的自由来自于容忍。一切对异端的排斥，迫害都来自于深信自己的理念的准确性，而对其他想法行为表现出极度不容忍了。从历史的角度上来看，统治阶级排斥异端，排斥其他于统治不利思想，被统治者打着自由的旗号推翻统治者之后往往又会走上不自由的老路。教皇打着上帝的权威来统治人民，上帝是不会犯错的，一切反对者、异己者都是魔鬼的教条了，一切不容忍根源在于“我不会错”的理念。从科学的角度上来说，怀疑是学术发展的强大动力；从个人意志角度上来说，不断地自我怀疑，接纳新思想、新理念是个人思想进步地源泉。在这方面看来，容忍确实能够给自由带来土壤。<br>这样的容忍，建立在个人独立思考的自由精神之上，而不是把别人的眼睛当眼睛，把别人的耳朵当耳朵，把别人的脑子当脑子。同时，不迷信权威，不断自我怀疑，以存疑的眼光、批判的态度去评估新的想法。</p>
-<h4 id="我的自由观"><a href="#我的自由观" class="headerlink" title="我的自由观"></a>我的自由观</h4><p>小子我也不知道，也在探索。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1995,7 +1995,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
