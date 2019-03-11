@@ -102,12 +102,12 @@
 <meta property="og:site_name" content="昊江的博客">
 <meta property="og:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为要让">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://47.93.198.51/temp/abstract_factory.jpg">
-<meta property="og:updated_time" content="2018-06-07T14:02:57.518Z">
+<meta property="og:image" content="https://image.zhishiring.top/jblog/abstractFactory.jpg?x-oss-process=style/default">
+<meta property="og:updated_time" content="2019-03-11T09:16:06.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式-抽象工厂模式">
 <meta name="twitter:description" content="介绍及使用动机我们使用软件的时候，界面不可能只有一种风格，有时候需要呆萌风格，有时候需要炫酷风格。这就对设计界面时提出了新的要求，不能在编写界面时将其硬编码而导致后期无法改动。此设计模式就是致力于提供一系列相关或互相依赖的接口，而不需指定他们具体的类。 引入现在我们需要制作一个有两种界面风格的的软件分别为Motif和Presentation Manager，两者具有不同的窗体与滚动条风格。因为要让">
-<meta name="twitter:image" content="http://47.93.198.51/temp/abstract_factory.jpg">
+<meta name="twitter:image" content="https://image.zhishiring.top/jblog/abstractFactory.jpg?x-oss-process=style/default">
 
 
 
@@ -402,7 +402,7 @@
 <p>createWindow in PMWidgetFactory<br>createScrollBar in PMWidgetFactory<br>PMWindow show<br>PMScrollBar rolling  </p>
 </blockquote>
 <p>可以看到，只通过指定客户端创建时传入的不同工厂方法的实现，便可以控制整个界面的风格。而无需将风格硬编码到客户端中。  </p>
-<h4 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h4><p><img src="http://47.93.198.51/temp/abstract_factory.jpg" alt="image"></p>
+<h4 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h4><p><img src="https://image.zhishiring.top/jblog/abstractFactory.jpg?x-oss-process=style/default" alt="image"></p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
 <li>分离了具体的类<br>Abstract Factory模式实现客户端与服务的分离，客户端通过操作抽象接口操纵实例，不关心下层实现。</li>
 <li>易于更换服务<br>一个具体应用中，只需要在初始化时指定需要的服务，所以一旦需要改变整个生产线的服务源时，只需要初始化时改变制定源。</li>
